@@ -1,0 +1,345 @@
+<app:applicationConfig xmlns:app="http://andera.com/infra/application.xsd">
+    <defaultSshConfig>
+        <remoteUsername>root</remoteUsername>
+        <!--Optional:-->
+        <privateKeyFilePath>~/.ssh/id_rsa</privateKeyFilePath>
+        <!--Optional:-->
+        <knownHostsFilePath>~/.ssh/known_hosts</knownHostsFilePath>
+        <!--Optional:-->
+        <addHostToKnownHostsFile>true</addHostToKnownHostsFile>
+        <!--Optional:-->
+        <sessionTimeout>5000</sessionTimeout>
+    </defaultSshConfig>
+
+    <opsConsoleDataSource>
+        <driverClass>com.mysql.jdbc.Driver</driverClass>
+        <url>jdbc:mysql://localhost:3306/ops_console</url>
+        <username>opsconsole</username>
+        <password>Andera123</password>
+        <connectionTimeoutInMs>5000</connectionTimeoutInMs>
+        <partitionCount>5</partitionCount>
+        <minConnectionsPerPartition>5</minConnectionsPerPartition>
+        <maxConnectionsPerPartition>10</maxConnectionsPerPartition>
+    </opsConsoleDataSource>
+
+    <configParsing>
+        <commandFormat>cat %s</commandFormat>
+        <hostNameCaseStartPattern>^\s*case\s+"\$host_name"\s+in\s*$</hostNameCaseStartPattern>
+        <hostNameCaseEndPattern>^\s*esac\s*$</hostNameCaseEndPattern>
+        <hostNamePattern>"([a-z-A-Z0-9]+)"\s*\)</hostNamePattern>
+        <appInstancePattern>^\s*([a-z-A-Z0-9_]+)_ip="(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"</appInstancePattern>
+    </configParsing>
+
+    <!--1 or more repetitions:-->
+    <managedEnvironment>
+        <id>INFRA-QA</id>
+        <databaseServer>192.168.0.200</databaseServer>
+        <maxRunningClientsPerServer>3</maxRunningClientsPerServer>
+        <deployable>true</deployable>
+        <operable>true</operable>
+        <configLocation>
+            <localConfig>
+                <filePath>/home/builder/test_data/ops-console/config_infra_qa.sh</filePath>
+            </localConfig>
+        </configLocation>
+    </managedEnvironment>
+
+    <managedEnvironment>
+        <id>ENV-A</id>
+        <databaseServer>127.0.0.1</databaseServer>
+        <maxRunningClientsPerServer>10</maxRunningClientsPerServer>
+        <deployable>true</deployable>
+        <operable>true</operable>
+        <configLocation>
+            <localConfig>
+                <filePath>/home/builder/test_data/ops-console/config_env_A.sh</filePath>
+            </localConfig>
+        </configLocation>
+    </managedEnvironment>
+
+    <managedEnvironment>
+        <id>ENV-B</id>
+        <databaseServer>127.0.0.1</databaseServer>
+        <maxRunningClientsPerServer>10</maxRunningClientsPerServer>
+        <deployable>true</deployable>
+        <operable>true</operable>
+        <configLocation>
+            <localConfig>
+                <filePath>/home/builder/test_data/ops-console/config_env_B.sh</filePath>
+            </localConfig>
+        </configLocation>
+    </managedEnvironment>
+
+    <managedEnvironment>
+        <id>ENV-C</id>
+        <databaseServer>127.0.0.1</databaseServer>
+        <maxRunningClientsPerServer>10</maxRunningClientsPerServer>
+        <deployable>true</deployable>
+        <operable>true</operable>
+        <configLocation>
+            <localConfig>
+                <filePath>/home/builder/test_data/ops-console/config_env_C.sh</filePath>
+            </localConfig>
+        </configLocation>
+    </managedEnvironment>
+
+    <managedEnvironment>
+        <id>MISSING</id>
+        <databaseServer>127.0.0.1</databaseServer>
+        <maxRunningClientsPerServer>10</maxRunningClientsPerServer>
+        <deployable>false</deployable>
+        <operable>false</operable>
+        <configLocation>
+            <localConfig>
+                <filePath>/home/builder/test_data/ops-console/config_env_MISSING.sh</filePath>
+            </localConfig>
+        </configLocation>
+    </managedEnvironment>
+
+    <server>
+        <occupiedSlotsCommandGroup>
+            <sshConfig>
+                <!-- connect as runner -->
+                <remoteUsername>runner</remoteUsername>
+            </sshConfig>
+            <command>
+                <!-- Will return a list of clients that have a runner java process belonging to runner -->
+                <commandFormat>ps -f -u runner | grep java | grep -v grep | sed 's|-D.*-c||' | awk '{printf "%20s\n", $9}'</commandFormat>
+                <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
+            </command>
+        </occupiedSlotsCommandGroup>
+    </server>
+
+    <appInstance>
+        <statusCommandGroup>
+            <sshConfig>
+                <!-- connect as runner -->
+                <remoteUsername>runner</remoteUsername>
+            </sshConfig>
+            <command>
+                <commandFormat>ps -fC java | egrep -w %s | awk '{ print $2 }'</commandFormat>
+                <maxOutputReadTimeInMs>2000</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                    <output comparator="REGEX_MATCH">^\s*\d+\s*$</output>
+                </expectedResult>
+            </command>
+            <command>
+                <commandFormat>grep "Starting Coyote HTTP/1.1 on http" ~/logs/%s.log</commandFormat>
+                <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                    <output comparator="REGEX_FIND">Starting Coyote HTTP/1.1 on http</output>
+                </expectedResult>
+            </command>
+            <command>
+                <commandFormat>curl --connect-timeout 2 -k -sL -w "%%{http_code}" "https://%s/oflows" -o /dev/null</commandFormat>
+                <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                    <output comparator="LITERAL">200</output>
+                </expectedResult>
+            </command>
+        </statusCommandGroup>
+        <getClientUrls>
+            <!--This will determine which row in the returned results is the Wizard URL. The second group, (http.+), is the URL -->
+            <wizardUrlPattern>^(Web Application)\s+(http.+)$</wizardUrlPattern>
+            <!--This will determine which row in the returned results is the Admin Console URL. The second group, (http.+), is the URL -->
+            <consoleUrlPattern>^(Console)\s+(http.+)$</consoleUrlPattern>
+            <getUrlsCommandGroup>
+                <sshConfig>
+                    <remoteUsername>builder</remoteUsername>
+                </sshConfig>
+                <command>
+                    <commandFormat>mysql --defaults-extra-file=$HOME/.db.cnf -D %s -N -B -e "SELECT n.name as namespace, nbu.element as url
+                        FROM namespace_base_urls nbu
+                        INNER JOIN namespace n ON nbu.namespace = n.id
+                        INNER JOIN client c ON n.client_fk = c.id
+                        WHERE c.name != 'admin';"</commandFormat>
+                    <maxOutputReadTimeInMs>1500</maxOutputReadTimeInMs>
+                    <expectedResult>
+                        <exitCode>0</exitCode>
+                    </expectedResult>
+                </command>
+            </getUrlsCommandGroup>
+        </getClientUrls>
+
+        <getClientRevisions>
+            <!--This will determine which row in the returned results is the skins. The second group, (\d+), is the revision number -->
+            <skinsRevisionPattern>^(skins)\s+(\d+)$</skinsRevisionPattern>
+            <!--This will determine which row in the returned results is the non-skins. The second group, (\d+), is the revision number -->
+            <nonSkinsRevisionPattern>^(resources)\s+(\d+)$</nonSkinsRevisionPattern>
+            <getRevisionsCommandGroup>
+                <sshConfig>
+                    <remoteUsername>builder</remoteUsername>
+                </sshConfig>
+                <command>
+                    <commandFormat>mysql --defaults-extra-file=$HOME/.db.cnf -D %s -N -B -e "SELECT ds.type, ds.revision FROM deploy_state ds;"</commandFormat>
+                    <maxOutputReadTimeInMs>1500</maxOutputReadTimeInMs>
+                    <expectedResult>
+                        <exitCode>0</exitCode>
+                    </expectedResult>
+                </command>
+            </getRevisionsCommandGroup>
+        </getClientRevisions>
+    </appInstance>
+
+    <appInstanceCommand>
+        <sshConfig>
+            <remoteUsername>runner</remoteUsername>
+            <sessionTimeout>300000</sessionTimeout>
+        </sshConfig>
+
+        <startCommandGroup>
+            <!-- start the app instance -->
+            <loggedCommand>
+                <commandFormat>/dist/system/jboss/scripts/start_client.sh %s | tee -a %s </commandFormat>
+                <maxOutputReadTimeInMs>2000</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                </expectedResult>
+                <expectedResult>
+                    <!-- -1 indicates that we exited out of the session before it completed -->
+                    <exitCode>-1</exitCode>
+                </expectedResult>
+                <logLocation>
+                    <!-- %s will be replaced with client id -->
+                    <logFileDirectory>/logs/ops_console/%s/commands</logFileDirectory>
+                    <logFileName>start_client.log.%s</logFileName>
+                </logLocation>
+            </loggedCommand>
+        </startCommandGroup>
+
+        <restartCommandGroup>
+            <!-- restart the app instance -->
+            <loggedCommand>
+                <commandFormat>/dist/system/jboss/scripts/start_client.sh %s | tee -a %s </commandFormat>
+                <maxOutputReadTimeInMs>2000</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                </expectedResult>
+                <expectedResult>
+                    <!-- -1 indicates that we exited out of the session before it completed -->
+                    <exitCode>-1</exitCode>
+                </expectedResult>
+                <logLocation>
+                    <!-- %s will be replaced with client id -->
+                    <logFileDirectory>/logs/ops_console/%s/commands</logFileDirectory>
+                    <logFileName>restart_client.log.%s</logFileName>
+                </logLocation>
+            </loggedCommand>
+        </restartCommandGroup>
+
+        <stopCommandGroup>
+            <!-- stop the app instance -->
+            <loggedCommand>
+                <commandFormat>/dist/system/jboss/scripts/stop_client.sh %s | tee -a %s </commandFormat>
+                <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                </expectedResult>
+                <expectedResult>
+                    <!-- -1 indicates that we exited out of the session before it completed -->
+                    <exitCode>-1</exitCode>
+                </expectedResult>
+                <logLocation>
+                    <!-- %s will be replaced with client id -->
+                    <logFileDirectory>/logs/ops_console/%s/commands</logFileDirectory>
+                    <logFileName>stop_client.log.%s</logFileName>
+                </logLocation>
+            </loggedCommand>
+        </stopCommandGroup>
+    </appInstanceCommand>
+
+    <deployment>
+        <!-- 300000 = 5 min -->
+        <maxEligibleToProcessTimeInMs>300000</maxEligibleToProcessTimeInMs>
+        <skinsDeployment>
+            <executeDeployCommandGroup>
+                <sshConfig>
+                    <remoteUsername>builder</remoteUsername>
+                </sshConfig>
+                <loggedCommand>
+                    <commandFormat>/dist/system/import_export/update_oflows_custom.sh %s</commandFormat>
+                    <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
+                    <logLocation>
+                        <!-- Location that the current script writes logs to -->
+                        <logFileDirectory>/logs/update_oflows_custom</logFileDirectory>
+                        <logFileName>update_oflows_custom.log.%s</logFileName>
+                    </logLocation>
+                </loggedCommand>
+            </executeDeployCommandGroup>
+            <statusCommandGroup>
+                <sshConfig>
+                    <remoteUsername>builder</remoteUsername>
+                </sshConfig>
+                <command>
+                    <!--
+                    Check for certain content in the log
+                    Expecting path to file name as parameter
+                    -->
+                    <commandFormat>egrep '*: Done' %s</commandFormat>
+                    <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
+                    <expectedResult>
+                        <exitCode>0</exitCode>
+                        <output comparator="REGEX_FIND">\bDone\b</output>
+                    </expectedResult>
+                </command>
+            </statusCommandGroup>
+        </skinsDeployment>
+
+        <nonSkinsDeployment>
+            <executeDeployCommandGroup>
+                <sshConfig>
+                    <remoteUsername>builder</remoteUsername>
+                </sshConfig>
+                <loggedCommand>
+                    <commandFormat>/dist/system/import_export/import_all.sh %s</commandFormat>
+                    <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
+                    <logLocation>
+                        <!-- Location that the current script writes logs to -->
+                        <logFileDirectory>/logs/import_all</logFileDirectory>
+                        <logFileName>import_all.log.%s</logFileName>
+                    </logLocation>
+                </loggedCommand>
+            </executeDeployCommandGroup>
+            <statusCommandGroup>
+                <sshConfig>
+                    <remoteUsername>builder</remoteUsername>
+                </sshConfig>
+                <command>
+                    <!--
+                    Check for certain content in the log
+                    Expecting path to file name as parameter
+                    -->
+                    <commandFormat>egrep 'Clear cache SKIPPED|Field cache refreshed' %s</commandFormat>
+                    <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
+                    <expectedResult>
+                        <exitCode>0</exitCode>
+                        <output comparator="REGEX_FIND">\bClear cache SKIPPED\b|\bField cache refreshed\b</output>
+                    </expectedResult>
+                </command>
+            </statusCommandGroup>
+        </nonSkinsDeployment>
+    </deployment>
+
+    <logFile>
+        <fetchAllLinesCommandGroup>
+            <sshConfig>
+                <remoteUsername>builder</remoteUsername>
+            </sshConfig>
+            <command>
+                <!-- expects the absolute file path to the file -->
+                <commandFormat>cat %s</commandFormat>
+                <maxOutputReadTimeInMs>10000</maxOutputReadTimeInMs>
+                <expectedResult>
+                    <exitCode>0</exitCode>
+                </expectedResult>
+                <expectedResult>
+                    <exitCode>-1</exitCode>
+                </expectedResult>
+            </command>
+        </fetchAllLinesCommandGroup>
+    </logFile>
+
+</app:applicationConfig>

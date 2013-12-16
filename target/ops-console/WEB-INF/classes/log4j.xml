@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- ######################## START - Log4j Appenders ######################## -->
+    <appender name="nullAppender" class="org.apache.log4j.varia.NullAppender"/>
+
+    <appender name="defaultFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/logs/ops_console/debug.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="sshFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/logs/ops_console/SSH/ssh.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="controllersFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/logs/ops_console/Controllers/controllers.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="servicesFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/logs/ops_console/Services/services.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="persistenceFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/logs/ops_console/Persistence/hibernate.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="performanceFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/logs/ops_console/Performance/perfStats.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="httpRequestResponseFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/logs/ops_console/HTTP/requestResponse.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <!--This AsyncCoalescingStatisticsAppender groups StopWatch log messages
+    into GroupedTimingStatistics messages which it sends on the
+    file appender defined below-->
+    <appender name="coalescingStatistics" class="org.perf4j.log4j.AsyncCoalescingStatisticsAppender">
+        <!--
+          The TimeSlice option is used to determine the time window for which
+          all received StopWatch logs are aggregated to create a single
+          GroupedTimingStatistics log. In milliseconds.
+          60000 - 1 min
+          300000 - 5 min
+        -->
+        <param name="TimeSlice" value="300000"/>
+        <appender-ref ref="performanceFileAppender"/>
+    </appender>
+    <!-- ######################### END - Log4j Appenders ######################### -->
+
+
+    <!-- ######################### START - Log4j Loggers ######################### -->
+    <!--
+      The Perf4J logger. Note that org.perf4j.TimingLogger is the value of the
+      org.perf4j.StopWatch.DEFAULT_LOGGER_NAME constant. Also, note that
+      additivity is set to false, which is usually what is desired - this means
+      that timing statements will only be sent to this logger and NOT to
+      upstream loggers.
+    -->
+    <logger name="org.perf4j.TimingLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="coalescingStatistics"/>
+    </logger>
+    <logger name="com.paypal.location.controllers">
+        <level value="DEBUG"/>
+        <appender-ref ref="controllersFileAppender"/>
+    </logger>
+    <logger name="com.paypal.location.services">
+        <level value="DEBUG"/>
+        <appender-ref ref="servicesFileAppender"/>
+    </logger>
+    <logger name="com.paypal.location.ssh">
+        <level value="DEBUG"/>
+        <appender-ref ref="sshFileAppender"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="DEBUG"/>
+        <appender-ref ref="persistenceFileAppender"/>
+    </logger>
+    <logger name="com.paypal.location.filters">
+        <level value="DEBUG"/>
+        <appender-ref ref="httpRequestResponseFileAppender"/>
+    </logger>
+
+
+    <!-- This is the default log4j logger -->
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="defaultFileAppender"/>
+    </root>
+    <!-- ######################### END - Log4j Loggers ######################### -->
+</log4j:configuration>

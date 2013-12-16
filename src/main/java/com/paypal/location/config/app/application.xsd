@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://andera.com/infra/application.xsd"
+           xmlns:tns="http://andera.com/infra/application.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <xs:element name="applicationConfig">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>
+                    This schema shall provide configuration details for the ops-console
+                </xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="defaultSshConfig" type="tns:SshConfigType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines DEFAULT ssh configuration used to connect to remote hosts.
+                            Values can be overridden using function specific SshConfigType definitions.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <xs:element name="opsConsoleDataSource" type="tns:DataSourceConfigType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines the data source details for connecting to the ops_console database
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <xs:element name="configParsing" type="tns:ConfigParsingType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines the properties needed to parse the config_*.sh files
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- This is a list of the environments managed by this application-->
+                <xs:element name="managedEnvironment" type="tns:ManagedEnvironmentType" minOccurs="1" maxOccurs="unbounded"/>
+
+                <!-- This is an aggregate of the details associated to server configuration -->
+                <xs:element name="server" type="tns:ServerType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines any configuration related to Servers
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- This is an aggregate of the details associated to appInstance configuration -->
+                <xs:element name="appInstance" type="tns:AppInstanceType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines any configuration related to App Instances
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- This is an aggregate of the details associated to appInstanceCommand configuration -->
+                <xs:element name="appInstanceCommand" type="tns:AppInstanceCommandType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines any configuration related to App Instances Commands
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- This is an aggregate of the details associated to deployment configuration -->
+                <xs:element name="deployment" type="tns:DeploymentType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines any configuration related to Deployments
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- This is an aggregate of the details associated to log files -->
+                <xs:element name="logFile" type="tns:LogFileType" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines any configuration related to log files
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- include any resource specific configuration here-->
+    <xs:complexType name="AppInstanceType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties required to query/get the current status of a specific app-instance
+                which is a client running on a specific server.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="statusCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to query/get the java process id for a client
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="getClientUrls">
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>
+                            This will contain the properties required to get the urls for a client from the client database.
+                            It will call one of the "agent" scripts that exist on the database server.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence>
+                        <xs:element name="wizardUrlPattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This is the pattern used to find wizard url record from the results
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="consoleUrlPattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This is the pattern used to find console url record from the results
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="getUrlsCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This will be the details for calling the agent script
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getClientRevisions">
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>
+                            This will contain the properties required to get the revisions for a client from the client database.
+                            It will call one of the "agent" scripts that exist on the database server.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence>
+                        <xs:element name="skinsRevisionPattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This is the pattern used to find the skins revision
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="nonSkinsRevisionPattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This is the pattern used to find the non-skins revision
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="getRevisionsCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This will be the details for calling the agent script
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- include any resource specific configuration here-->
+    <xs:complexType name="AppInstanceCommandType">
+        <xs:sequence>
+            <xs:element name="sshConfig" type="tns:SshConfigType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines ssh configuration used to connect to remote hosts.
+                        Values can be overridden using function specific SshConfigType definitions.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="startCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to START an app instance
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="restartCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to RESTART an app instance
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="stopCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to STOP an app instance
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeploymentType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties required perform a deployment of a client to an environment
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="maxEligibleToProcessTimeInMs" type="xs:long" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the maximum amount of time a deployment record can be IN_PROGRESS.
+                        If this time is exceeded, it will be set to FAILED.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <!-- This is an aggregate of the details associated to deployment configuration -->
+            <xs:element name="skinsDeployment" type="tns:ResourceDeploymentType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines skins deployment configuration
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <!-- This is an aggregate of the details associated to deployment configuration -->
+            <xs:element name="nonSkinsDeployment" type="tns:ResourceDeploymentType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines non-skins deployment configuration
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResourceDeploymentType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties required perform a deployment of a client to an environment
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="executeDeployCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to execute the deployment
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="statusCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to get the status.
+                        Initially this will be based on the presence of specific content in the log.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LogFileType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties required read the contents of log files
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="fetchAllLinesCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to get the entire contents of a given file
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:complexType name="ServerType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties required to query/get information associated to a Deployment Resources
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="occupiedSlotsCommandGroup" type="tns:SshCommandGroupType" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This will contain the properties required to query/get the clients that are currently in
+                        starting or started mode on the server (has a PID)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LogLocationType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties related to the location of a log file
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="logFileDirectory" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is where the log file is expected to reside.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="logFileName" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the base file name of the deployment log.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LoggedCommandType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for a single SSH Command that has an associated log.
+                The LogLocation can b
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:CommandType">
+                <xs:sequence>
+                    <xs:element name="logLocation" type="tns:LogLocationType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SshCommandGroupType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for one to many SSH commands that share a single ssh session.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sshConfig" type="tns:SshConfigType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines ssh configuration to connect to the hosts defined.
+                        -If defined, this is is what will be used to execute this command.
+                        -If not defined, the default values will be used.
+                        -You can also define only the elements you want to override default values.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="command" type="tns:CommandType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the string format of the shell command to run.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="loggedCommand" type="tns:LoggedCommandType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the string format of the shell command to run.
+                        It will have configuration related to log location of the script
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CommandType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for a single SSH command
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="commandFormat" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the string format of the shell command to run.
+                        It may expect zero or more token substitutions.
+                        The implementing code will need to have some sort of knowledge of the expected arguments.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="maxOutputReadTimeInMs" type="xs:long" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the maximum amount of time spent to read the output from a command in milliseconds.
+                        Setting this allows long running processes to be executed without having to wait for it to
+                        complete.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="expectedResult" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        The expected results of the command. This is optional.
+                        This allows for conditional logic in the code.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>
+                            If both expected exitCode and output equal the actual, the command will be considered
+                            successful
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence>
+                        <xs:element name="exitCode" type="xs:int" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This is the expected exit code
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="output" minOccurs="0" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This is the expected output that will be checked using the specified comparator.
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute name="comparator" type="tns:ComparatorType"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:simpleType name="ComparatorType">
+        <xs:annotation>
+            <xs:documentation>
+                This will define the supported comparator types.
+                REGEX will signal a regular express comparison
+                LITERAL will signal a literal string match
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="REGEX_FIND"/>
+            <xs:enumeration value="REGEX_MATCH"/>
+            <xs:enumeration value="LITERAL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="ConfigParsingType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the properties required to parse the config_*.sh files
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="commandFormat" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the string format of the shell command to run.
+                        It will expect 1 argument substitution: file path of file to open
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="hostNameCaseStartPattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the pattern used to determine the start of the switch/case statement for host names
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="hostNameCaseEndPattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the pattern used to determine the end of the switch/case statement for host names
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="hostNamePattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the pattern used to find the host name definitions
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="appInstancePattern" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the pattern used to find the app instance definitions
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ManagedEnvironmentType">
+        <xs:annotation>
+            <xs:documentation>
+                This is the base type for all "environments".
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This is the unique id for an environment. It will be used globally to identify
+                        an environment. Examples - staging, qa, production, clientServices, etc...
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="databaseServer" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines the database server on which the deployment tasks are executed.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="maxRunningClientsPerServer" type="xs:int" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines the maximum number of clients that can be running per server.
+                        Running will be defined as either STARTING or STARTED. In other words, has a PID.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deployable" type="xs:boolean" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is this environment deployable via the ops console?
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="operable" type="xs:boolean" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is this environment operable via the ops console?
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="configLocation">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="remoteConfig" type="tns:RemoteConfigType" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This optional element allows us to configure contextual information about this file.
+                                    It can be used as part of any messaging related to the validation of this specific
+                                    file.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+
+                        <xs:element name="localConfig" type="tns:LocalConfigType" minOccurs="1" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    This optional element allows us to configure contextual information about this file.
+                                    It can be used as part of any messaging related to the validation of this specific
+                                    file.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LocalConfigType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for the LOCAL config_*.sh file for the environment
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="filePath" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines the LOCAL file path where the config_*.sh file is located
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RemoteConfigType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for the config_*.sh file for the environment
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sshConfig" type="tns:SshConfigType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines ssh configuration to connect to the hosts defined.
+                        If not defined, the default values will be used. You can also define
+                        only the elements you want to override default values.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="host" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines where the config_*.sh file is hosted
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="port" type="xs:int" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines which port to connect to
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="filePath" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines the file path on the remote host where the config_*.sh file is located
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SshConfigType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for SSH connectivity
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="remoteUsername" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines what user to connect to the remote host as.
+                        It essentially defines the {username}@{remote host}
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="privateKeyFilePath" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines the local path to the private key file. Example: ~/.ssh/id_rsa
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="knownHostsFilePath" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines the local path to the known hosts file. Example: ~/.ssh/known_hosts
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="addHostToKnownHostsFile" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines whether the ssh session will add the remote host to the known hosts file.
+                        If true, the host will be added and the session will connect.
+                        If false, the host will NOT be added and the session will NOT connect. A connection exception
+                        will occur if host is unknown.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sessionTimeout" type="xs:int" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        This defines amount of time keep a session alive in milliseconds
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DataSourceConfigType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for the configuring a datasource object
+
+                dataSource.setDriverClass("com.mysql.jdbc.Driver");
+                dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/ops_console");
+                dataSource.setUsername("root");
+                dataSource.setPassword("Andera123");
+                dataSource.setPartitionCount(5);
+                dataSource.setMinConnectionsPerPartition(5);
+                dataSource.setMaxConnectionsPerPartition(10);
+                dataSource.setConnectionTimeoutInMs(5000);
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="driverClass" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="url" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="username" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="password" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="connectionTimeoutInMs" type="xs:long" minOccurs="1" maxOccurs="1" />
+
+            <!-- Connection Pooling-->
+            <xs:element name="partitionCount" type="xs:int" minOccurs="1" maxOccurs="1" />
+            <xs:element name="minConnectionsPerPartition" type="xs:int" minOccurs="1" maxOccurs="1" />
+            <xs:element name="maxConnectionsPerPartition" type="xs:int" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

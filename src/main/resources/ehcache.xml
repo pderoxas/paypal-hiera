@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+    <defaultCache eternal="true" maxElementsInMemory="100" overflowToDisk="false"/>
+
+    <!-- Cache settings for the data contained in a single config_*.sh files.
+        timeToLiveSeconds is the amount of time the cache is valid for.
+        Once expired, an ssh connection will be made to read the config_*.sh files from the remote machines.
+        timeToIdleSeconds="0" -> zero means no expiration
+        timeToLiveSeconds="0" -> zero means no expiration
+        -->
+    <cache name="all_EnvironmentConfigData"
+           maxElementsInMemory="1"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+
+    <!-- Cache settings for the data contained in a single config_*.sh files.
+            timeToLiveSeconds is the amount of time the cache is valid for.
+            Once expired, an ssh connection will be made to read the config_*.sh files from the remote machines.
+            timeToIdleSeconds="0" -> zero means no expiration
+            timeToLiveSeconds="0" -> zero means no expiration
+            -->
+    <cache name="single_EnvironmentConfigData"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+
+    <!--
+    Cache settings for ALL App Instance Data stored in the config_{env}.sh files.
+    -->
+    <cache name="all_AppInstanceConfigData"
+           maxElementsInMemory="1"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+
+    <!--
+    Cache settings for ALL Server Data stored in the config_{env}.sh files.
+    -->
+    <cache name="all_ServerConfigData"
+           maxElementsInMemory="1"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+    <!--
+    Cache settings for ALL Client Data stored in the config_{env}.sh files.
+    -->
+    <cache name="all_ClientConfigData"
+           maxElementsInMemory="1"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+
+    <!--
+        Cache settings for individual app instance resources.
+        This is caching the AppInstance object that is constructed from the data stored in the config_{env}.sh files
+        and data stored in client databases and dynamic data such as PID and Status
+    -->
+    <cache name="dynamic_AppInstanceObject"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToIdleSeconds="30"
+           timeToLiveSeconds="30"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+
+    <!--
+    This is caching the AppInstance object that is constructed from the data stored in the config_{env}.sh files ONLY!
+-->
+    <cache name="static_AppInstanceObject"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+
+
+    <!--
+        Cache settings for regex patterns. 0=infinite lifetimes
+    -->
+    <cache name="regexPatternCache"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"/>
+</ehcache>
