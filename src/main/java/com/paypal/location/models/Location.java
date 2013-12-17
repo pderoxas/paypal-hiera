@@ -23,19 +23,22 @@ public class Location implements Resource<String>  {
     private String description;
     private String version;
     private String scmTag;
-    private Collection<Link> links;
+    private String downloadUrl;
+    private String targetFilePath;
 
     public Location(String id, String version) {
         this.id = id;
         this.version = version;
     }
 
-    public Location(String id, String name, String description, String version, String scmTag) {
+    public Location(String id, String name, String description, String version, String scmTag, String downloadUrl, String targetFilePath) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.version = version;
         this.scmTag = scmTag;
+        this.downloadUrl = downloadUrl;
+        this.targetFilePath = targetFilePath;
     }
 
     @Override
@@ -45,17 +48,6 @@ public class Location implements Resource<String>  {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Override
-    public Collection<Link> getLinks() {
-        this.links = new ArrayList<Link>();
-        this.links.add(new Link("location", "/locations/" + id));
-        return links;
-    }
-
-    public void setLinks(Collection<Link> links) {
-        this.links = links;
     }
 
     public String getName() {
@@ -89,4 +81,12 @@ public class Location implements Resource<String>  {
     public void setScmTag(String scmTag) {
         this.scmTag = scmTag;
     }
+
+    public String getDownloadUrl() { return downloadUrl; }
+
+    public void setDownloadUrl(String downloadUrl) { this.downloadUrl = downloadUrl; }
+
+    public String getTargetFilePath() { return targetFilePath; }
+
+    public void setTargetFilePath(String targetFilePath) { this.targetFilePath = targetFilePath; }
 }

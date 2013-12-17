@@ -85,6 +85,7 @@
     <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.12.1.GA" level="project" />
     <orderEntry type="library" name="Maven: org.hsqldb:hsqldb:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.50" level="project" />
   </component>
 </module>
 

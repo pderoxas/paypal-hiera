@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://andera.com/infra/application.xsd"
+           xmlns:tns="http://andera.com/infra/application.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <xs:element name="locationConfig">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>
+                    This schema shall provide configuration details for the ops-console
+                </xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="location" type="tns:LocationType" minOccurs="1" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            This defines the location configurations
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+    <xs:complexType name="LocationType">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain the details for a location
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The id of the location
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Human readable name of the location
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Description of the location
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sdkVersion" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Version of the sdk for this location
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sdkVersionTag" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The tag for the sdk version
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="sdkRepoBaseUrl" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The base url for downloading the sdk files
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sdkFile" type="tns:SdkFileType" minOccurs="0" maxOccurs="unbounded" >
+                <xs:annotation>
+                    <xs:documentation>
+                        The files associated to the sdk release
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SdkFileType">
+        <xs:annotation>
+            <xs:documentation>
+                This is a file associated to the sdk
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="repoFilePath" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The file path of the file in the repo (relative to the base url and version)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="targetFilePath" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The full file path on the target agent
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

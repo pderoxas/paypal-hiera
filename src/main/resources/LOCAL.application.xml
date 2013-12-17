@@ -13,9 +13,9 @@
 
     <opsConsoleDataSource>
         <driverClass>com.mysql.jdbc.Driver</driverClass>
-        <url>jdbc:mysql://localhost:3306/ops_console</url>
-        <username>opsconsole</username>
-        <password>Andera123</password>
+        <url>jdbc:mysql://localhost:3306/paypal</url>
+        <username>paypal_user</username>
+        <password>paypal</password>
         <connectionTimeoutInMs>5000</connectionTimeoutInMs>
         <partitionCount>5</partitionCount>
         <minConnectionsPerPartition>5</minConnectionsPerPartition>

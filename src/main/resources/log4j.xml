@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jakarta.apache.org/log4j/ ">
     <!-- ######################## START - Log4j Appenders ######################## -->
     <appender name="nullAppender" class="org.apache.log4j.varia.NullAppender"/>
 
     <appender name="defaultFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/logs/ops_console/debug.log"/>
+        <param name="file" value="/logs/paypal/debug.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -14,7 +16,7 @@
     </appender>
 
     <appender name="sshFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/logs/ops_console/SSH/ssh.log"/>
+        <param name="file" value="/logs/paypal/SSH/ssh.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -23,7 +25,7 @@
     </appender>
 
     <appender name="controllersFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/logs/ops_console/Controllers/controllers.log"/>
+        <param name="file" value="/logs/paypal/Controllers/controllers.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -32,7 +34,7 @@
     </appender>
 
     <appender name="servicesFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/logs/ops_console/Services/services.log"/>
+        <param name="file" value="/logs/paypal/Services/services.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -41,7 +43,7 @@
     </appender>
 
     <appender name="persistenceFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/logs/ops_console/Persistence/hibernate.log"/>
+        <param name="file" value="/logs/paypal/Persistence/hibernate.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -50,7 +52,7 @@
     </appender>
 
     <appender name="performanceFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/logs/ops_console/Performance/perfStats.log"/>
+        <param name="File" value="/logs/paypal/Performance/perfStats.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -59,7 +61,7 @@
     </appender>
 
     <appender name="httpRequestResponseFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/logs/ops_console/HTTP/requestResponse.log"/>
+        <param name="File" value="/logs/paypal/HTTP/requestResponse.log"/>
         <param name="datePattern" value="'.'yyyy-MM-dd"/>
         <param name="append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">

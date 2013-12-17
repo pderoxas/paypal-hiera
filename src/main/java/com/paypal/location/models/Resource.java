@@ -11,5 +11,5 @@ import java.util.Collection;
  */
 public interface Resource<K> {
     public K getId();
-    public Collection<Link> getLinks();
+    //public Collection<Link> getLinks();
 }

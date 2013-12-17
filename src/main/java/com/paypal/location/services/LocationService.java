@@ -38,27 +38,29 @@ public class LocationService {
         Location resource = null;
         locationId.replace(".localdomain","");
         if(locationId.equals("lenovo-y510p")){
-            resource = new Location(locationId, "Boston, MA", "Store location in Faneuil Hall", "1.0.0", "v1.0.0");
+            resource = new Location(locationId, "Boston, MA", "Store location in Faneuil Hall", "1.0.0", "v1.0.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.0.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
+        } else if(locationId.equals("store-01-server")){
+            resource = new Location(locationId, "Providence, RI", "Store #1", "1.2.0", "v1.2.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ri-01")){
-            resource = new Location(locationId, "Providence, RI", "Store #1", "1.1.0", "v1.1.0");
+            resource = new Location(locationId, "Providence, RI", "Store #1", "1.1.0", "v1.1.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.1.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ri-02")){
-            resource = new Location(locationId, "Providence, RI", "Store #2", "1.1.0", "v1.1.0");
+            resource = new Location(locationId, "Providence, RI", "Store #2", "1.1.0", "v1.1.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.1.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ny-01")){
-            resource = new Location(locationId, "New York, NY", "Store #1", "1.2.0", "v1.2.0");
+            resource = new Location(locationId, "New York, NY", "Store #1", "1.2.0", "v1.2.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ny-02")){
-            resource = new Location(locationId, "West Islip, NY", "Store #2", "1.2.0", "v1.2.0");
+            resource = new Location(locationId, "West Islip, NY", "Store #2", "1.2.0", "v1.2.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ny-03")){
-            resource = new Location(locationId, "Brooklyn, NY", "Store #3", "1.2.0", "v1.2.0");
+            resource = new Location(locationId, "Brooklyn, NY", "Store #3", "1.2.0", "v1.2.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ca-01")){
-            resource = new Location(locationId, "San Francisco, CA", "Store #1", "1.2.1", "v1.2.1");
+            resource = new Location(locationId, "San Francisco, CA", "Store #1", "1.2.1", "v1.2.1", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.1/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ca-02")){
-            resource = new Location(locationId, "Los Angeles, CA", "Store #2", "1.2.1", "v1.2.1");
+            resource = new Location(locationId, "Los Angeles, CA", "Store #2", "1.2.1", "v1.2.1", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.1/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ca-03")){
-            resource = new Location(locationId, "Sacramento, CA", "Store #3", "1.2.1", "v1.2.1");
+            resource = new Location(locationId, "Sacramento, CA", "Store #3", "1.2.1", "v1.2.1", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.1/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(locationId.equals("ca-04")){
-            resource = new Location(locationId, "San Jose, CA", "Store #4", "1.2.1", "v1.2.1");
+            resource = new Location(locationId, "San Jose, CA", "Store #4", "1.2.1", "v1.2.1", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.2.1/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         } else if(StringUtils.isBlank(locationId)) {
-            resource = new Location(locationId, "default", "Default Store", "1.0.0", "v1.0.0");
+            resource = new Location(locationId, "default", "Default Store", "1.0.0", "v1.0.0", "https://github.com/pderoxas/paypal-pos-sdk/releases/download/v1.0.0/paypal-pos-sdk.jar", "/etc/puppet/modules/sdk/files/paypal-pos-sdk.jar");
         }
 
 
