@@ -31,7 +31,14 @@ public class LocationController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Location getLocation(@RequestParam("id") String id) throws DalException, ResourceNotFoundException {
+    public Iterable<Location> getLocations() throws DalException {
+        return locationService.getAllLocations();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Location getLocation(@PathVariable String id) throws DalException, ResourceNotFoundException {
         return locationService.getLocation(id);
     }
 }

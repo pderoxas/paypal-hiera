@@ -6,7 +6,7 @@ package com.paypal.location.exceptions;
  * Time: 11:43 AM
  * Implementation of Exception specific to Resource Not Found
  */
-public class ResourceNotFoundException extends OpsConsoleException {
+public class ResourceNotFoundException extends ApplicationException {
 
     public ResourceNotFoundException(String message, ExceptionCode exceptionCode) {
         super(message, exceptionCode);

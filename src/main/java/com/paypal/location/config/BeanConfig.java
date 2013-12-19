@@ -8,11 +8,7 @@ package com.paypal.location.config;
  */
 
 import com.paypal.common.exceptions.ConfigException;
-import com.paypal.common.exceptions.DalException;
-import com.paypal.location.config.app.ApplicationConfig;
 import com.paypal.location.dal.*;
-import com.paypal.location.exceptions.ApplicationConfigException;
-import com.paypal.location.exceptions.SSHException;
 import com.paypal.location.models.*;
 import com.paypal.location.services.*;
 import com.paypal.common.utils.JaxbUtils;
@@ -55,28 +51,13 @@ public class BeanConfig {
     }
 
     /**
-     * The custom application configuration properties defined in application.xml
-     * @return ApplicationConfig
+     * The custom runtime properties
+     * @return Properties
      */
     @Bean
-    public ApplicationConfig applicationConfig() throws ConfigException, IOException {
+    public Properties runtimeProperties() throws ConfigException, IOException {
         ClassPathResource resource = new ClassPathResource("/runtime.properties");
-        Properties props = PropertiesLoaderUtils.loadProperties(resource);
-        String applicationPropertiesFile = props.getProperty("application.properties.file");
-        logger.info("********************************************************************");
-        logger.info("LOADING application properties file: " + applicationPropertiesFile);
-        logger.info("********************************************************************");
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(applicationPropertiesFile);
-        return JaxbUtils.unmarsal(inputStream, ApplicationConfig.class);
-    }
-
-    /**
-     * Instance of the ApplicationConfigHelper class
-     * @return ApplicationConfigHelper
-     */
-    @Bean
-    public ApplicationConfigHelper applicationConfigHelper() {
-        return new ApplicationConfigHelper();
+        return PropertiesLoaderUtils.loadProperties(resource);
     }
 
     //----------------------------------------------

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,26 +20,12 @@ import java.util.Set;
 @Qualifier("Location")
 public class Location implements Resource<String>  {
     private String id;
-    private String name;
-    private String description;
-    private String version;
-    private String scmTag;
-    private String downloadUrl;
-    private String targetFilePath;
+    private String scmTag;;
 
-    public Location(String id, String version) {
+    public Location(String id, String scmTag) {
         this.id = id;
-        this.version = version;
-    }
-
-    public Location(String id, String name, String description, String version, String scmTag, String downloadUrl, String targetFilePath) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.version = version;
         this.scmTag = scmTag;
-        this.downloadUrl = downloadUrl;
-        this.targetFilePath = targetFilePath;
+
     }
 
     @Override
@@ -50,30 +37,6 @@ public class Location implements Resource<String>  {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
     public String getScmTag() {
         return scmTag;
     }
@@ -81,12 +44,4 @@ public class Location implements Resource<String>  {
     public void setScmTag(String scmTag) {
         this.scmTag = scmTag;
     }
-
-    public String getDownloadUrl() { return downloadUrl; }
-
-    public void setDownloadUrl(String downloadUrl) { this.downloadUrl = downloadUrl; }
-
-    public String getTargetFilePath() { return targetFilePath; }
-
-    public void setTargetFilePath(String targetFilePath) { this.targetFilePath = targetFilePath; }
 }

@@ -6,7 +6,7 @@ package com.paypal.location.exceptions;
  * Time: 11:43 AM
  * Implementation of Exception specific to request parameter classes
  */
-public class InvalidResourceAttributeValueException extends OpsConsoleException {
+public class InvalidResourceAttributeValueException extends ApplicationException {
 
     public InvalidResourceAttributeValueException(String message, ExceptionCode exceptionCode) {
         super(message, exceptionCode);

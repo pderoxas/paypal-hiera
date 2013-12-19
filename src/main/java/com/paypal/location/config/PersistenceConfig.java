@@ -7,7 +7,6 @@ package com.paypal.location.config;
  * Configuration for all the bean classes needed by the application
  */
 
-import com.paypal.location.config.app.ApplicationConfig;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +24,15 @@ import java.util.Properties;
 public class PersistenceConfig {
     protected Logger logger = Logger.getLogger(this.getClass());
 
-    @Autowired
-    private ApplicationConfig applicationConfig;
-
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(applicationConfig.getOpsConsoleDataSource().getDriverClass());
-        dataSource.setUrl(applicationConfig.getOpsConsoleDataSource().getUrl());
-        dataSource.setUsername(applicationConfig.getOpsConsoleDataSource().getUsername());
-        dataSource.setPassword(applicationConfig.getOpsConsoleDataSource().getPassword());
-        dataSource.setInitialSize(applicationConfig.getOpsConsoleDataSource().getMinConnectionsPerPartition());
-        dataSource.setMaxActive(applicationConfig.getOpsConsoleDataSource().getMaxConnectionsPerPartition());
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/paypal");
+        dataSource.setUsername("paypal_user");
+        dataSource.setPassword("paypal");
+        dataSource.setInitialSize(5);
+        dataSource.setMaxActive(10);
         dataSource.setMaxWait(1000);
         return dataSource;
     }

@@ -27,27 +27,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     //Custom Exceptions
     @ExceptionHandler(value = { ResourceNotFoundException.class })
-    public ResponseEntity<Object> handleResourceNotFoundException(OpsConsoleException ex) {
+    public ResponseEntity<Object> handleResourceNotFoundException(ApplicationException ex) {
         logger.info("Catching: " + ex.getClass().getSimpleName());
         return createErrorResponse(HttpStatus.NOT_FOUND, ex);
     }
-    @ExceptionHandler(value = { SSHException.class })
-    public ResponseEntity<Object> handleSshException(OpsConsoleException ex) {
-        logger.info("Catching: " + ex.getClass().getSimpleName());
-        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
-    }
+
     @ExceptionHandler(value = { InvalidStateException.class })
-    public ResponseEntity<Object> handleNoAvailableSlotsException(OpsConsoleException ex) {
+    public ResponseEntity<Object> handleNoAvailableSlotsException(ApplicationException ex) {
         logger.info("Catching: " + ex.getClass().getSimpleName());
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
     @ExceptionHandler(value = { InvalidResourceAttributeValueException.class })
-    public ResponseEntity<Object> handleInvalidResourceAttributeValueException(OpsConsoleException ex) {
+    public ResponseEntity<Object> handleInvalidResourceAttributeValueException(ApplicationException ex) {
         logger.info("Catching: " + ex.getClass().getSimpleName());
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
     @ExceptionHandler(value = { ApplicationConfigException.class })
-    public ResponseEntity<Object> handleConfigNotFoundException(OpsConsoleException ex) {
+    public ResponseEntity<Object> handleConfigNotFoundException(ApplicationException ex) {
         logger.info("Catching: " + ex.getClass().getSimpleName());
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
@@ -131,7 +127,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @param ex - Exception object
      * @return ResponseEntity object
      */
-    private ResponseEntity<Object> createErrorResponse(HttpStatus httpStatus, OpsConsoleException ex) {
+    private ResponseEntity<Object> createErrorResponse(HttpStatus httpStatus, ApplicationException ex) {
         return createErrorResponse(httpStatus, ex.getExceptionCode(), ex);
     }
 

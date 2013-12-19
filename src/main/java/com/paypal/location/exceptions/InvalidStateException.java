@@ -6,7 +6,7 @@ package com.paypal.location.exceptions;
  * Time: 11:43 AM
  * Implementation of Exception specific to ssh-related classes
  */
-public class InvalidStateException extends OpsConsoleException {
+public class InvalidStateException extends ApplicationException {
     public InvalidStateException(String message, ExceptionCode exceptionCode) {
         super(message, exceptionCode);
     }
