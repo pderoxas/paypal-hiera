@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <display-name>paypal-location</display-name>
+    <display-name>paypal-store</display-name>
 
 
     <servlet>
@@ -18,7 +18,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                com.paypal.location.config.WebMvcConfig
+                com.paypal.hiera.config.WebMvcConfig
             </param-value>
         </init-param>
     </servlet>
@@ -30,7 +30,7 @@
 
     <filter>
         <filter-name>Log4jMDCFilter</filter-name>
-        <filter-class>com.paypal.location.filters.Log4jMDCFilter</filter-class>
+        <filter-class>com.paypal.hiera.filters.Log4jMDCFilter</filter-class>
     </filter>
 
     <filter-mapping>

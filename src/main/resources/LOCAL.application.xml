@@ -1,4 +1,7 @@
-<app:applicationConfig xmlns:app="http://andera.com/infra/application.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<app:applicationConfig xmlns:app="http://paypal.com/infra/store.xsd"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://paypal.com/infra/application.xsd ">
     <defaultSshConfig>
         <remoteUsername>root</remoteUsername>
         <!--Optional:-->
@@ -39,8 +42,10 @@
         <operable>true</operable>
         <configLocation>
             <localConfig>
-                <!--<filePath>~/test_data/com.paypal.location-console/config_infra_qa.sh</filePath>-->
-                <filePath>/home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-location/src/test/resources/config_infra_qa.sh</filePath>
+                <!--<filePath>~/test_data/com.paypal.hiera-console/config_infra_qa.sh</filePath>-->
+                <filePath>
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_infra_qa.sh
+                </filePath>
             </localConfig>
         </configLocation>
     </managedEnvironment>
@@ -54,7 +59,9 @@
         <operable>true</operable>
         <configLocation>
             <localConfig>
-                <filePath>/home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-location/src/test/resources/config_env_A.sh</filePath>
+                <filePath>
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_env_A.sh
+                </filePath>
             </localConfig>
         </configLocation>
     </managedEnvironment>
@@ -67,7 +74,9 @@
         <operable>true</operable>
         <configLocation>
             <localConfig>
-                <filePath>/home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-location/src/test/resources/config_env_B.sh</filePath>
+                <filePath>
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_env_B.sh
+                </filePath>
             </localConfig>
         </configLocation>
     </managedEnvironment>
@@ -80,7 +89,9 @@
         <operable>true</operable>
         <configLocation>
             <localConfig>
-                <filePath>/home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-location/src/test/resources/config_env_C.sh</filePath>
+                <filePath>
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_env_C.sh
+                </filePath>
             </localConfig>
         </configLocation>
     </managedEnvironment>
@@ -93,7 +104,9 @@
             </sshConfig>
             <command>
                 <!-- Will return a list of clients that have a runner java process belonging to runner -->
-                <commandFormat>ps -f -u runner | grep java | grep -v grep | sed 's|-D.*-c||' | awk '{printf "%20s\n", $9}'</commandFormat>
+                <commandFormat>ps -f -u runner | grep java | grep -v grep | sed 's|-D.*-c||' | awk '{printf "%20s\n",
+                    $9}'
+                </commandFormat>
                 <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
             </command>
         </occupiedSlotsCommandGroup>
@@ -122,7 +135,8 @@
                 </expectedResult>
             </command>
             <command>
-                <commandFormat>curl --connect-timeout 2 -k -sL -w "%%{http_code}" "https://%s/oflows" -o /dev/null</commandFormat>
+                <commandFormat>curl --connect-timeout 2 -k -sL -w "%%{http_code}" "https://%s/oflows" -o /dev/null
+                </commandFormat>
                 <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
                 <expectedResult>
                     <exitCode>0</exitCode>
@@ -140,11 +154,13 @@
                     <remoteUsername>builder</remoteUsername>
                 </sshConfig>
                 <command>
-                    <commandFormat>mysql --defaults-extra-file=$HOME/.db.cnf -D %s -N -B -e "SELECT n.name as namespace, nbu.element as url
+                    <commandFormat>mysql --defaults-extra-file=$HOME/.db.cnf -D %s -N -B -e "SELECT n.name as namespace,
+                        nbu.element as url
                         FROM namespace_base_urls nbu
                         INNER JOIN namespace n ON nbu.namespace = n.id
                         INNER JOIN client c ON n.client_fk = c.id
-                        WHERE c.name != 'admin';"</commandFormat>
+                        WHERE c.name != 'admin';"
+                    </commandFormat>
                     <maxOutputReadTimeInMs>1500</maxOutputReadTimeInMs>
                     <expectedResult>
                         <exitCode>0</exitCode>
@@ -154,16 +170,18 @@
         </getClientUrls>
 
         <getClientRevisions>
-            <!--This will determine which row in the returned results is the skins. The second group, (\d+), is the revision number -->
+            <!--This will determine which row in the returned results is the skins. The second group, (\d+), is the revision code -->
             <skinsRevisionPattern>^(skins)\s+(\d+)$</skinsRevisionPattern>
-            <!--This will determine which row in the returned results is the non-skins. The second group, (\d+), is the revision number -->
+            <!--This will determine which row in the returned results is the non-skins. The second group, (\d+), is the revision code -->
             <nonSkinsRevisionPattern>^(resources)\s+(\d+)$</nonSkinsRevisionPattern>
             <getRevisionsCommandGroup>
                 <sshConfig>
                     <remoteUsername>builder</remoteUsername>
                 </sshConfig>
                 <command>
-                    <commandFormat>mysql --defaults-extra-file=$HOME/.db.cnf -D %s -N -B -e "SELECT ds.type, ds.revision FROM deploy_state ds;"</commandFormat>
+                    <commandFormat>mysql --defaults-extra-file=$HOME/.db.cnf -D %s -N -B -e "SELECT ds.type, ds.revision
+                        FROM deploy_state ds;"
+                    </commandFormat>
                     <maxOutputReadTimeInMs>1500</maxOutputReadTimeInMs>
                     <expectedResult>
                         <exitCode>0</exitCode>
@@ -182,7 +200,7 @@
         <startCommandGroup>
             <!-- start the app instance -->
             <loggedCommand>
-                <commandFormat>/dist/system/jboss/scripts/start_client.sh %s | tee -a %s </commandFormat>
+                <commandFormat>/dist/system/jboss/scripts/start_client.sh %s | tee -a %s</commandFormat>
                 <maxOutputReadTimeInMs>2000</maxOutputReadTimeInMs>
                 <expectedResult>
                     <exitCode>0</exitCode>
@@ -202,7 +220,7 @@
         <restartCommandGroup>
             <!-- restart the app instance -->
             <loggedCommand>
-                <commandFormat>/dist/system/jboss/scripts/start_client.sh %s | tee -a %s </commandFormat>
+                <commandFormat>/dist/system/jboss/scripts/start_client.sh %s | tee -a %s</commandFormat>
                 <maxOutputReadTimeInMs>2000</maxOutputReadTimeInMs>
                 <expectedResult>
                     <exitCode>0</exitCode>
@@ -222,7 +240,7 @@
         <stopCommandGroup>
             <!-- stop the app instance -->
             <loggedCommand>
-                <commandFormat>/dist/system/jboss/scripts/stop_client.sh %s | tee -a %s </commandFormat>
+                <commandFormat>/dist/system/jboss/scripts/stop_client.sh %s | tee -a %s</commandFormat>
                 <maxOutputReadTimeInMs>500</maxOutputReadTimeInMs>
                 <expectedResult>
                     <exitCode>0</exitCode>
@@ -252,7 +270,7 @@
                     <commandFormat>/dist/system/import_export/update_oflows_custom.sh %s</commandFormat>
                     <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
                     <logLocation>
-                        <!-- Location that the current script writes logs to -->
+                        <!-- Store that the current script writes logs to -->
                         <logFileDirectory>/logs/update_oflows_custom</logFileDirectory>
                         <logFileName>update_oflows_custom.log.%s</logFileName>
                     </logLocation>
@@ -286,7 +304,7 @@
                     <commandFormat>/dist/system/import_export/import_all.sh %s</commandFormat>
                     <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
                     <logLocation>
-                        <!-- Location that the current script writes logs to -->
+                        <!-- Store that the current script writes logs to -->
                         <logFileDirectory>/logs/import_all</logFileDirectory>
                         <logFileName>import_all.log.%s</logFileName>
                     </logLocation>

@@ -98,15 +98,15 @@
         <level value="INFO"/>
         <appender-ref ref="coalescingStatistics"/>
     </logger>
-    <logger name="com.paypal.location.controllers">
+    <logger name="com.paypal.hiera.controllers">
         <level value="DEBUG"/>
         <appender-ref ref="controllersFileAppender"/>
     </logger>
-    <logger name="com.paypal.location.services">
+    <logger name="com.paypal.hiera.services">
         <level value="DEBUG"/>
         <appender-ref ref="servicesFileAppender"/>
     </logger>
-    <logger name="com.paypal.location.ssh">
+    <logger name="com.paypal.hiera.ssh">
         <level value="DEBUG"/>
         <appender-ref ref="sshFileAppender"/>
     </logger>
@@ -114,7 +114,7 @@
         <level value="DEBUG"/>
         <appender-ref ref="persistenceFileAppender"/>
     </logger>
-    <logger name="com.paypal.location.filters">
+    <logger name="com.paypal.hiera.filters">
         <level value="DEBUG"/>
         <appender-ref ref="httpRequestResponseFileAppender"/>
     </logger>
