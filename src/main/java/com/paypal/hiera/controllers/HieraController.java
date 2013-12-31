@@ -38,8 +38,8 @@ public class HieraController {
     @RequestMapping(value = "/geoLocations", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Iterable<GeoLocation> getGeoLocations() throws DalException {
-        return geoLocationService.getAllGeoLocations();
+    public Iterable<GeoLocation> getGeoLocations(@RequestParam(value = "code", required=false) String geoLocationCode) throws DalException {
+        return geoLocationService.getGeoLocationByCode(geoLocationCode);
     }
 
     @RequestMapping(value = "/geoLocations/{id}", method = RequestMethod.GET)

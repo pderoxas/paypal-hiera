@@ -4,6 +4,7 @@ import com.paypal.common.exceptions.DalException;
 import com.paypal.hiera.models.Resource;
 import com.google.common.base.Predicate;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -41,11 +42,11 @@ public interface ResourceDAO<T extends Resource, K extends Serializable> {
 
     /**
      * Return a list of resources given a Criteria object
-     * @param criteria CriteriaQuery instance
+     * @param criterion Criterion instance
      * @return List of Resource Objects
      * @throws DalException
      */
-    Iterable<T> getList(Criteria criteria) throws DalException;
+    Iterable<T> getList(Criterion criterion) throws DalException;
 
     /**
      * Returns an instance of a Criteria that can be used to

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,17 +45,13 @@ public class GeoLocationDAO implements ResourceDAO<GeoLocation, Integer> {
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public Iterable<GeoLocation> getAll() throws DalException {
-        Criteria criteria = this.getCriteriaInstance();
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return this.getList(criteria);
+        return this.getList(null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<GeoLocation> getByIdList(List<Integer> idList) throws DalException {
-        Criteria criteria = this.getCriteriaInstance();
-        criteria.add(Restrictions.in("id", idList));
-        return this.getList(criteria);
+        return this.getList(Restrictions.in("id", idList));
     }
 
     @Override
@@ -64,7 +61,10 @@ public class GeoLocationDAO implements ResourceDAO<GeoLocation, Integer> {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<GeoLocation> getList(Criteria criteria) throws DalException {
+    public Iterable<GeoLocation> getList(Criterion criterion) throws DalException {
+        Criteria criteria = this.getCriteriaInstance();
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(criterion != null) criteria.add(criterion);
         return criteria.list();
     }
 

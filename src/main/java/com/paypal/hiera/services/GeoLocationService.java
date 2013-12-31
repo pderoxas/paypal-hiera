@@ -1,12 +1,16 @@
 package com.paypal.hiera.services;
 
 import com.paypal.common.exceptions.DalException;
+import com.paypal.common.utils.StringUtils;
 import com.paypal.hiera.dal.ResourceDAO;
 import com.paypal.hiera.exceptions.ExceptionCode;
 import com.paypal.hiera.exceptions.ResourceNotFoundException;
 import com.paypal.hiera.models.GeoLocation;
 import com.paypal.hiera.models.Sdk;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,13 @@ public class GeoLocationService {
     private ResourceDAO<GeoLocation, Integer> resourceDAO;
 
     public Iterable<GeoLocation> getAllGeoLocations() throws DalException {
+        return resourceDAO.getAll();
+    }
+
+    public Iterable<GeoLocation> getGeoLocationByCode(String geoLocationCode) throws DalException {
+        if(!StringUtils.isBlank(geoLocationCode)){
+            return resourceDAO.getList(Restrictions.eq("code", geoLocationCode));
+        }
         return resourceDAO.getAll();
     }
 

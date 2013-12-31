@@ -28,6 +28,9 @@ public class GeoLocation implements Resource<Integer> {
     @Column(name="description", nullable=false)
     private String description;
 
+    @Column(name="sdk_root_dir", nullable=false)
+    private String sdkRootDir;
+
     @OneToOne
     @JoinColumn(name="sdk_id")
     private Sdk sdk;
@@ -82,5 +85,13 @@ public class GeoLocation implements Resource<Integer> {
 
     public void setStores(Set<Store> stores) {
         this.stores = stores;
+    }
+
+    public String getSdkRootDir() {
+        return sdkRootDir;
+    }
+
+    public void setSdkRootDir(String sdkRootDir) {
+        this.sdkRootDir = sdkRootDir;
     }
 }
