@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "store")
@@ -30,6 +31,9 @@ public class Store implements Resource<Integer> {
     @OneToOne
     @JoinColumn(name="sdk_id")
     private Sdk sdk;
+
+    @JoinColumn(name="geo_location_id")
+    private int geo_location_id;
 
     @Override
     public Integer getId() {
@@ -72,4 +76,11 @@ public class Store implements Resource<Integer> {
         this.sdk = sdk;
     }
 
+    public int getGeo_location_id() {
+        return geo_location_id;
+    }
+
+    public void setGeo_location_id(int geo_location_id) {
+        this.geo_location_id = geo_location_id;
+    }
 }

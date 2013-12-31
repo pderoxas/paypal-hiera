@@ -45,6 +45,7 @@ public class GeoLocationDAO implements ResourceDAO<GeoLocation, Integer> {
     @Transactional(readOnly = true)
     public Iterable<GeoLocation> getAll() throws DalException {
         Criteria criteria = this.getCriteriaInstance();
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return this.getList(criteria);
     }
 

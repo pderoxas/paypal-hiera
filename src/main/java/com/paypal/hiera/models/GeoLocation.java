@@ -32,6 +32,9 @@ public class GeoLocation implements Resource<Integer> {
     @JoinColumn(name="sdk_id")
     private Sdk sdk;
 
+    @OneToMany (targetEntity = Store.class, fetch = FetchType.EAGER, mappedBy = "geo_location_id")
+    private Set<Store> stores;
+
     @Override
     public Integer getId() {
         return id;
@@ -71,5 +74,13 @@ public class GeoLocation implements Resource<Integer> {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Set<Store> getStores() {
+        return stores;
+    }
+
+    public void setStores(Set<Store> stores) {
+        this.stores = stores;
     }
 }
