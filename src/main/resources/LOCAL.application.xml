@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<app:applicationConfig xmlns:app="http://paypal.com/infra/store.xsd"
+<app:applicationConfig xmlns:app="http://paypal.com/infra/storeConfig.xsd"
                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                        xsi:schemaLocation="http://paypal.com/infra/application.xsd ">
     <defaultSshConfig>
@@ -44,7 +44,7 @@
             <localConfig>
                 <!--<filePath>~/test_data/com.paypal.hiera-console/config_infra_qa.sh</filePath>-->
                 <filePath>
-                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_infra_qa.sh
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-storeConfig/src/test/resources/config_infra_qa.sh
                 </filePath>
             </localConfig>
         </configLocation>
@@ -60,7 +60,7 @@
         <configLocation>
             <localConfig>
                 <filePath>
-                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_env_A.sh
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-storeConfig/src/test/resources/config_env_A.sh
                 </filePath>
             </localConfig>
         </configLocation>
@@ -75,7 +75,7 @@
         <configLocation>
             <localConfig>
                 <filePath>
-                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_env_B.sh
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-storeConfig/src/test/resources/config_env_B.sh
                 </filePath>
             </localConfig>
         </configLocation>
@@ -90,7 +90,7 @@
         <configLocation>
             <localConfig>
                 <filePath>
-                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-store/src/test/resources/config_env_C.sh
+                    /home/dev/IdeaProjects/infra/branches/features/B-06992-API-Deployment-Enhancements/paypal-storeConfig/src/test/resources/config_env_C.sh
                 </filePath>
             </localConfig>
         </configLocation>
@@ -145,9 +145,9 @@
             </command>
         </statusCommandGroup>
         <getClientUrls>
-            <!--This will determine which row in the returned results is the Wizard URL. The second group, (http.+), is the URL -->
+            <!--This will determine which row in the returned results is the Wizard URL. The second groupConfig, (http.+), is the URL -->
             <wizardUrlPattern>^(Web Application)\s+(http.+)$</wizardUrlPattern>
-            <!--This will determine which row in the returned results is the Admin Console URL. The second group, (http.+), is the URL -->
+            <!--This will determine which row in the returned results is the Admin Console URL. The second groupConfig, (http.+), is the URL -->
             <consoleUrlPattern>^(Console)\s+(http.+)$</consoleUrlPattern>
             <getUrlsCommandGroup>
                 <sshConfig>
@@ -170,9 +170,9 @@
         </getClientUrls>
 
         <getClientRevisions>
-            <!--This will determine which row in the returned results is the skins. The second group, (\d+), is the revision code -->
+            <!--This will determine which row in the returned results is the skins. The second groupConfig, (\d+), is the revision code -->
             <skinsRevisionPattern>^(skins)\s+(\d+)$</skinsRevisionPattern>
-            <!--This will determine which row in the returned results is the non-skins. The second group, (\d+), is the revision code -->
+            <!--This will determine which row in the returned results is the non-skins. The second groupConfig, (\d+), is the revision code -->
             <nonSkinsRevisionPattern>^(resources)\s+(\d+)$</nonSkinsRevisionPattern>
             <getRevisionsCommandGroup>
                 <sshConfig>
@@ -270,7 +270,7 @@
                     <commandFormat>/dist/system/import_export/update_oflows_custom.sh %s</commandFormat>
                     <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
                     <logLocation>
-                        <!-- Store that the current script writes logs to -->
+                        <!-- StoreConfig that the current script writes logs to -->
                         <logFileDirectory>/logs/update_oflows_custom</logFileDirectory>
                         <logFileName>update_oflows_custom.log.%s</logFileName>
                     </logLocation>
@@ -304,7 +304,7 @@
                     <commandFormat>/dist/system/import_export/import_all.sh %s</commandFormat>
                     <maxOutputReadTimeInMs>5000</maxOutputReadTimeInMs>
                     <logLocation>
-                        <!-- Store that the current script writes logs to -->
+                        <!-- StoreConfig that the current script writes logs to -->
                         <logFileDirectory>/logs/import_all</logFileDirectory>
                         <logFileName>import_all.log.%s</logFileName>
                     </logLocation>

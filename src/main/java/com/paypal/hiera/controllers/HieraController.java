@@ -2,11 +2,12 @@ package com.paypal.hiera.controllers;
 
 import com.paypal.common.exceptions.DalException;
 import com.paypal.hiera.exceptions.ResourceNotFoundException;
-import com.paypal.hiera.models.GeoLocation;
-import com.paypal.hiera.models.Sdk;
-import com.paypal.hiera.models.Store;
-import com.paypal.hiera.services.GeoLocationService;
-import com.paypal.hiera.services.SdkService;
+import com.paypal.hiera.models.HieraData;
+import com.paypal.hiera.models.LocationConfig;
+import com.paypal.hiera.models.GroupConfig;
+import com.paypal.hiera.models.StoreConfig;
+import com.paypal.hiera.services.LocationService;
+import com.paypal.hiera.services.GroupService;
 import com.paypal.hiera.services.StoreService;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * User: pderoxas
  * Date: 8/15/13
  * Time: 9:56 AM
- * Controller class for Store Resource
+ * Controller class for StoreConfig Resource
  */
 @Controller
 @RequestMapping("")
@@ -27,71 +28,88 @@ public class HieraController {
     private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    private GeoLocationService geoLocationService;
+    private LocationService locationService;
 
+    @Autowired
+    private GroupService groupService;
+    
     @Autowired
     private StoreService storeService;
 
-    @Autowired
-    private SdkService sdkService;
 
-    @RequestMapping(value = "/geoLocations", method = RequestMethod.GET)
+    //GeoLocations===================================================
+    @RequestMapping(value = "/hieraData", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Iterable<GeoLocation> getGeoLocations(@RequestParam(value = "code", required=false) String geoLocationCode) throws DalException {
-        return geoLocationService.getGeoLocationByCode(geoLocationCode);
+    public HieraData getHieraData() throws DalException {
+        HieraData hieraData = new HieraData();
+        hieraData.setDefaultConfigs(locationService.getLocationByCode(null));
+        hieraData.setGroupConfigs(groupService.getAllGroups());
+        hieraData.setCustomConfigs(storeService.getAllStores());
+        return hieraData;
     }
 
-    @RequestMapping(value = "/geoLocations/{id}", method = RequestMethod.GET)
+    //GeoLocations===================================================
+    @RequestMapping(value = "/locations", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public GeoLocation getGeoLocation(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
-        return geoLocationService.getGeoLocation(id);
+    public Iterable<LocationConfig> getGeoLocations(@RequestParam(value = "code", required=false) String geoLocationCode) throws DalException {
+        return locationService.getLocationByCode(geoLocationCode);
     }
 
-    @RequestMapping(value = "/geoLocations", method = RequestMethod.POST)
-    public String updateGeoLocation(@RequestBody GeoLocation geoLocation) throws DalException, ResourceNotFoundException {
-        int id = geoLocationService.saveGeoLocation(geoLocation).getId();
-        return "redirect:/geoLocations/" + id;
+    @RequestMapping(value = "/locations/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public LocationConfig getGeoLocation(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+        return locationService.getLocation(id);
     }
 
+    @RequestMapping(value = "/locations", method = RequestMethod.POST)
+    public String updateGeoLocation(@RequestBody LocationConfig locationConfig) throws DalException, ResourceNotFoundException {
+        String id = locationService.saveLocation(locationConfig).getId();
+        return "redirect:/locations/" + id;
+    }
+
+    //Groups===================================================
+    @RequestMapping(value = "/groups", method = RequestMethod.GET)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Iterable<GroupConfig> getGroups() throws DalException {
+        return groupService.getAllGroups();
+    }
+
+    @RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public GroupConfig getGroup(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+        return groupService.getGroup(id);
+    }
+
+    @RequestMapping(value = "/groups", method = RequestMethod.POST)
+    public String updateGroup(@RequestBody GroupConfig groupConfig) throws DalException, ResourceNotFoundException {
+        String id = groupService.saveGroup(groupConfig).getId();
+        return "redirect:/groups/" + id;
+    }
+
+    //Stores===================================================
     @RequestMapping(value = "/stores", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Iterable<Store> getStores() throws DalException {
+    public Iterable<StoreConfig> getStores() throws DalException {
         return storeService.getAllStores();
     }
 
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Store getStore(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+    public StoreConfig getStore(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
         return storeService.getStore(id);
     }
 
     @RequestMapping(value = "/stores", method = RequestMethod.POST)
-    public String updateStore(@RequestBody Store store) throws DalException, ResourceNotFoundException {
-        int id = storeService.saveStore(store).getId();
+    public String updateStore(@RequestBody StoreConfig storeConfig) throws DalException, ResourceNotFoundException {
+        String id = storeService.saveStore(storeConfig).getId();
         return "redirect:/stores/" + id;
     }
 
-    @RequestMapping(value = "/sdks", method = RequestMethod.GET)
-    @ResponseBody
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Iterable<Sdk> getSdks() throws DalException {
-        return sdkService.getAllSdks();
-    }
-
-    @RequestMapping(value = "/sdks/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Sdk getSdk(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
-        return sdkService.getSdk(id);
-    }
-
-    @RequestMapping(value = "/sdks", method = RequestMethod.POST)
-    public String updateSdk(@RequestBody Sdk sdk) throws DalException, ResourceNotFoundException {
-        int id = sdkService.saveSdk(sdk).getId();
-        return "redirect:/sdks/" + id;
-    }
 }

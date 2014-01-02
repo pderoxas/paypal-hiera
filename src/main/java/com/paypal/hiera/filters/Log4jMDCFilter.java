@@ -119,7 +119,7 @@ public class Log4jMDCFilter implements Filter {
         public BufferedRequestWrapper(HttpServletRequest req) throws IOException {
             super(req);
 
-            // Store the inputStream in a buffer
+            // StoreConfig the inputStream in a buffer
             InputStream inputStream = req.getInputStream();
             this.byteArrayOutputStream = new ByteArrayOutputStream();
             byte tmpBuffer[] = new byte[1024];

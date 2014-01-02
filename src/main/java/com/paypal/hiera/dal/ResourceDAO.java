@@ -78,4 +78,12 @@ public interface ResourceDAO<T extends Resource, K extends Serializable> {
      * @throws DalException
      */
     K updateResource(T resource) throws DalException;
+
+    /**
+     * Updates an existing instance of a resource
+     * @param resource - The resource to update
+     * @return primary key of the resource
+     * @throws DalException
+     */
+    K saveOrUpdateResource(T resource) throws DalException;
 }

@@ -4,7 +4,7 @@ import com.paypal.common.exceptions.DalException;
 import com.paypal.hiera.dal.ResourceDAO;
 import com.paypal.hiera.exceptions.ExceptionCode;
 import com.paypal.hiera.exceptions.ResourceNotFoundException;
-import com.paypal.hiera.models.Sdk;
+import com.paypal.hiera.models.GroupConfig;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,38 +20,34 @@ import java.util.List;
  */
 
 @Service
-public class SdkService {
+public class GroupService {
     private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    @Qualifier("SdkDAO")
-    private ResourceDAO<Sdk, Integer> resourceDAO;
+    @Qualifier("GroupDAO")
+    private ResourceDAO<GroupConfig, Integer> resourceDAO;
 
-    public Iterable<Sdk> getAllSdks() throws DalException {
+    public Iterable<GroupConfig> getAllGroups() throws DalException {
         return resourceDAO.getAll();
     }
 
-    public Iterable<Sdk> getSdks(List<Integer> idList) throws DalException {
+    public Iterable<GroupConfig> getGroups (List<Integer> idList) throws DalException {
         return resourceDAO.getByIdList(idList);
     }
 
-    public Sdk getSdk(Integer id) throws DalException, ResourceNotFoundException {
-        Sdk resource = resourceDAO.getById(id);
+    public GroupConfig getGroup(Integer id) throws DalException, ResourceNotFoundException {
+        GroupConfig resource = resourceDAO.getById(id);
         if(resource == null){
-            ResourceNotFoundException e = new ResourceNotFoundException("SDK (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
+            ResourceNotFoundException e = new ResourceNotFoundException("GroupConfig Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
             logger.info(e.getMessage(), e);
             throw e;
         }
         return resource;
     }
 
-    public Sdk saveSdk(Sdk sdk) throws DalException {
-        if(sdk.getId() > 0){
-            resourceDAO.updateResource(sdk);
-        } else {
-            resourceDAO.addResource(sdk);
-        }
-        return sdk;
+    public GroupConfig saveGroup(GroupConfig groupConfig) throws DalException {
+        resourceDAO.saveOrUpdateResource(groupConfig);
+        return groupConfig;
     }
 
 }

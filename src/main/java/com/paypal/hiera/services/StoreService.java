@@ -4,7 +4,7 @@ import com.paypal.common.exceptions.DalException;
 import com.paypal.hiera.dal.ResourceDAO;
 import com.paypal.hiera.exceptions.ExceptionCode;
 import com.paypal.hiera.exceptions.ResourceNotFoundException;
-import com.paypal.hiera.models.Store;
+import com.paypal.hiera.models.StoreConfig;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,33 +25,29 @@ public class StoreService {
 
     @Autowired
     @Qualifier("StoreDAO")
-    private ResourceDAO<Store, Integer> resourceDAO;
+    private ResourceDAO<StoreConfig, Integer> resourceDAO;
 
-    public Iterable<Store> getAllStores() throws DalException {
+    public Iterable<StoreConfig> getAllStores() throws DalException {
         return resourceDAO.getAll();
     }
 
-    public Iterable<Store> getStores(List<Integer> idList) throws DalException {
+    public Iterable<StoreConfig> getStores(List<Integer> idList) throws DalException {
         return resourceDAO.getByIdList(idList);
     }
 
-    public Store getStore(Integer id) throws DalException, ResourceNotFoundException {
-        Store resource = resourceDAO.getById(id);
+    public StoreConfig getStore(Integer id) throws DalException, ResourceNotFoundException {
+        StoreConfig resource = resourceDAO.getById(id);
         if(resource == null){
-            ResourceNotFoundException e = new ResourceNotFoundException("Store Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
+            ResourceNotFoundException e = new ResourceNotFoundException("StoreConfig Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
             logger.info(e.getMessage(), e);
             throw e;
         }
         return resource;
     }
 
-    public Store saveStore(Store store) throws DalException {
-        if(store.getId() > 0){
-            resourceDAO.updateResource(store);
-        } else {
-            resourceDAO.addResource(store);
-        }
-        return store;
+    public StoreConfig saveStore(StoreConfig storeConfig) throws DalException {
+        resourceDAO.saveOrUpdateResource(storeConfig);
+        return storeConfig;
     }
 
 }

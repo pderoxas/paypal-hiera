@@ -11,10 +11,10 @@
                 </xs:documentation>
             </xs:annotation>
             <xs:sequence>
-                <xs:element name="store" type="tns:LocationType" minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="storeConfig" type="tns:LocationType" minOccurs="1" maxOccurs="unbounded">
                     <xs:annotation>
                         <xs:documentation>
-                            This defines the store configurations
+                            This defines the storeConfig configurations
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
@@ -29,42 +29,42 @@
     <xs:complexType name="LocationType">
         <xs:annotation>
             <xs:documentation>
-                This will contain the details for a store
+                This will contain the details for a storeConfig
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
-                        The id of the store
+                        The id of the storeConfig
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
-                        Human readable name of the store
+                        Human readable name of the storeConfig
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
-                        Description of the store
+                        Description of the storeConfig
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="sdkVersion" type="xs:string" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
-                        Version of the sdk for this store
+                        Version of the sdkConfig for this storeConfig
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="sdkVersionTag" type="xs:string" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
-                        The tag for the sdk version
+                        The tag for the sdkConfig version
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -72,14 +72,14 @@
             <xs:element name="sdkRepoBaseUrl" type="xs:string" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
-                        The base url for downloading the sdk files
+                        The base url for downloading the sdkConfig files
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="sdkFile" type="tns:SdkFileType" minOccurs="0" maxOccurs="unbounded" >
                 <xs:annotation>
                     <xs:documentation>
-                        The files associated to the sdk release
+                        The files associated to the sdkConfig release
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -88,7 +88,7 @@
     <xs:complexType name="SdkFileType">
         <xs:annotation>
             <xs:documentation>
-                This is a file associated to the sdk
+                This is a file associated to the sdkConfig
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>

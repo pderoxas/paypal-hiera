@@ -2,7 +2,7 @@ package com.paypal.hiera.dal;
 
 import com.google.common.base.Predicate;
 import com.paypal.common.exceptions.DalException;
-import com.paypal.hiera.models.GeoLocation;
+import com.paypal.hiera.models.GroupConfig;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -25,10 +25,10 @@ import java.util.List;
  * DAO Implementation for Resource
  */
 @Repository
-@Qualifier("GeoLocationDAO")
+@Qualifier("GroupDAO")
 @Transactional
 
-public class GeoLocationDAO implements ResourceDAO<GeoLocation, Integer> {
+public class GroupDAO implements ResourceDAO<GroupConfig, String> {
     private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
@@ -44,24 +44,24 @@ public class GeoLocationDAO implements ResourceDAO<GeoLocation, Integer> {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
-    public Iterable<GeoLocation> getAll() throws DalException {
+    public Iterable<GroupConfig> getAll() throws DalException {
         return this.getList(null);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<GeoLocation> getByIdList(List<Integer> idList) throws DalException {
+    public Iterable<GroupConfig> getByIdList(List<String> idList) throws DalException {
         return this.getList(Restrictions.in("id", idList));
     }
 
     @Override
-    public Iterable<GeoLocation> getByPredicate(Predicate<GeoLocation> predicate) throws DalException {
+    public Iterable<GroupConfig> getByPredicate(Predicate<GroupConfig> predicate) throws DalException {
         throw new NotImplementedException("This method is not implemented.");
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<GeoLocation> getList(Criterion criterion) throws DalException {
+    public Iterable<GroupConfig> getList(Criterion criterion) throws DalException {
         Criteria criteria = this.getCriteriaInstance();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         if(criterion != null) criteria.add(criterion);
@@ -70,36 +70,48 @@ public class GeoLocationDAO implements ResourceDAO<GeoLocation, Integer> {
 
     @Override
     public Criteria getCriteriaInstance() throws DalException {
-        return this.getCurrentSession().createCriteria(GeoLocation.class);
+        return this.getCurrentSession().createCriteria(GroupConfig.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public GeoLocation getById(Integer id) throws DalException {
-        return (GeoLocation) getCurrentSession().get(GeoLocation.class, id);
+    public GroupConfig getById(String id) throws DalException {
+        return (GroupConfig) getCurrentSession().get(GroupConfig.class, id);
     }
 
     @Override
     @Transactional
-    public Integer addResource(GeoLocation geoLocation) throws DalException {
+    public String addResource(GroupConfig groupConfig) throws DalException {
         try {
-            getCurrentSession().save(geoLocation);
-            return geoLocation.getId();
+            getCurrentSession().save(groupConfig);
+            return groupConfig.getId();
         } catch (Exception e){
             logger.error(e.getMessage(), e);
-            throw new DalException("Failed to add geoLocation.", e);
+            throw new DalException("Failed to add hiera.", e);
         }
     }
 
     @Override
     @Transactional
-    public Integer updateResource(GeoLocation geoLocation) throws DalException {
+    public String updateResource(GroupConfig groupConfig) throws DalException {
         try {
-            getCurrentSession().update(geoLocation);
-            return geoLocation.getId();
+            getCurrentSession().update(groupConfig);
+            return groupConfig.getId();
         } catch (Exception e){
             logger.error(e.getMessage(), e);
-            throw new DalException("Failed to update geoLocation.", e);
+            throw new DalException("Failed to update GroupConfig.", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public String saveOrUpdateResource(GroupConfig groupConfig) throws DalException {
+        try {
+            getCurrentSession().saveOrUpdate(groupConfig);
+            return groupConfig.getId();
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DalException("Failed to update GroupConfig.", e);
         }
     }
 }

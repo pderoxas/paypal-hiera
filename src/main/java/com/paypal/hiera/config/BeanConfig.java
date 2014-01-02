@@ -62,26 +62,28 @@ public class BeanConfig {
     //----------------------------------------------
 
     @Bean
-    public ResourceDAO<GeoLocation, Integer> geoLocationDAO() {
-        return new GeoLocationDAO();
+    public ResourceDAO<LocationConfig, String> geoLocationDAO() {
+        return new LocationDAO();
     }
 
     @Bean
-    public ResourceDAO<Store, Integer> storeDAO() {
+    public ResourceDAO<StoreConfig, String> storeDAO() {
         return new StoreDAO();
     }
 
     @Bean
-    public ResourceDAO<Sdk, Integer> sdkDAO() {
-        return new SdkDAO();
+    public ResourceDAO<GroupConfig, String> storeGroupDAO() {
+        return new GroupDAO();
     }
+
+
 
     //----------------------------------------------
     //SERVICE BEANS
     //----------------------------------------------
     @Bean
-    public GeoLocationService geoLocationService() {
-        return new GeoLocationService();
+    public LocationService geoLocationService() {
+        return new LocationService();
     }
 
     @Bean
@@ -90,8 +92,10 @@ public class BeanConfig {
     }
 
     @Bean
-    public SdkService SdkService() {
-        return new SdkService();
+    public GroupService storeGroupService() {
+        return new GroupService();
     }
+
+
 
 }

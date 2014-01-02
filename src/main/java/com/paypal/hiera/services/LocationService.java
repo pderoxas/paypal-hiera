@@ -5,11 +5,8 @@ import com.paypal.common.utils.StringUtils;
 import com.paypal.hiera.dal.ResourceDAO;
 import com.paypal.hiera.exceptions.ExceptionCode;
 import com.paypal.hiera.exceptions.ResourceNotFoundException;
-import com.paypal.hiera.models.GeoLocation;
-import com.paypal.hiera.models.Sdk;
+import com.paypal.hiera.models.LocationConfig;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,45 +22,41 @@ import java.util.List;
  */
 
 @Service
-public class GeoLocationService {
+public class LocationService {
     private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    @Qualifier("GeoLocationDAO")
-    private ResourceDAO<GeoLocation, Integer> resourceDAO;
+    @Qualifier("LocationDAO")
+    private ResourceDAO<LocationConfig, Integer> resourceDAO;
 
-    public Iterable<GeoLocation> getAllGeoLocations() throws DalException {
+    public Iterable<LocationConfig> getAllLocations() throws DalException {
         return resourceDAO.getAll();
     }
 
-    public Iterable<GeoLocation> getGeoLocationByCode(String geoLocationCode) throws DalException {
+    public Iterable<LocationConfig> getLocationByCode(String geoLocationCode) throws DalException {
         if(!StringUtils.isBlank(geoLocationCode)){
             return resourceDAO.getList(Restrictions.eq("code", geoLocationCode));
         }
         return resourceDAO.getAll();
     }
 
-    public Iterable<GeoLocation> getGeoLocations(List<Integer> idList) throws DalException {
+    public Iterable<LocationConfig> getGeoLocations(List<Integer> idList) throws DalException {
         return resourceDAO.getByIdList(idList);
     }
 
-    public GeoLocation getGeoLocation(Integer id) throws DalException, ResourceNotFoundException {
-        GeoLocation resource = resourceDAO.getById(id);
+    public LocationConfig getLocation(Integer id) throws DalException, ResourceNotFoundException {
+        LocationConfig resource = resourceDAO.getById(id);
         if(resource == null){
-            ResourceNotFoundException e = new ResourceNotFoundException("GeoLocation Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
+            ResourceNotFoundException e = new ResourceNotFoundException("LocationConfig Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
             logger.info(e.getMessage(), e);
             throw e;
         }
         return resource;
     }
 
-    public GeoLocation saveGeoLocation(GeoLocation geoLocation) throws DalException {
-        if(geoLocation.getId() > 0){
-            resourceDAO.updateResource(geoLocation);
-        } else {
-            resourceDAO.addResource(geoLocation);
-        }
-        return geoLocation;
+    public LocationConfig saveLocation(LocationConfig locationConfig) throws DalException {
+        resourceDAO.saveOrUpdateResource(locationConfig);
+        return locationConfig;
     }
 
 }

@@ -7,16 +7,14 @@ import org.springframework.context.annotation.Scope;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sdk")
+@Table(name = "group_config" )
 @Scope("prototype")
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
-@Qualifier("Sdk")
-public class Sdk implements Resource<Integer> {
-
+@Qualifier("GroupConfig")
+public class GroupConfig implements Resource<String> {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="id", nullable=false)
-    private Integer id;
+    private String id;
 
     @Column(name="version", nullable=false)
     private String version;
@@ -24,15 +22,18 @@ public class Sdk implements Resource<Integer> {
     @Column(name="platform", nullable=false)
     private String platform;
 
+    @Column(name="root_dir", nullable=false)
+    private String rootDir;
+
     @Column(name="description", nullable=false)
     private String description;
 
     @Override
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,6 +51,14 @@ public class Sdk implements Resource<Integer> {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public String getRootDir() {
+        return rootDir;
+    }
+
+    public void setRootDir(String rootDir) {
+        this.rootDir = rootDir;
     }
 
     public String getDescription() {

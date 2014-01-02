@@ -12,6 +12,45 @@ USE paypal;
 #  "puppet_version":"3.3.2"
 #}
 
+
+#    @Id
+#    @Column(name="id", nullable=false)
+#    private String id;
+
+    @Column(name="version", nullable=false)
+    private String version;
+
+    @Column(name="platform", nullable=false)
+    private String platform;
+
+    @Column(name="root_dir", nullable=false)
+    private String rootDir;
+
+    @Column(name="description", nullable=false)
+    private String description;
+
+
+CREATE TABLE IF NOT EXISTS `store_config` (
+  `id` varchar(50) NOT NULL,
+  `version` varchar(10) NOT NULL,
+  `platform` varchar(25) NOT NULL,
+  `root_dir` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `dt_created` datetime DEFAULT NULL,
+  `ts_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+DROP TRIGGER IF EXISTS trigger_set_store_dt_created;
+CREATE TRIGGER trigger_set_store_config_dt_created
+  BEFORE INSERT ON store_config
+  FOR EACH ROW SET NEW.dt_created = NOW();
+
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS `sdk` (
   `id` int NOT NULL AUTO_INCREMENT,
   `version` varchar(10) NOT NULL,

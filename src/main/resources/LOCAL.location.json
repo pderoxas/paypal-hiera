@@ -1,8 +1,8 @@
 [
-    {"id":"store-01-server","scmTag":"v1.0.0"},
-    {"id":"store-02-server","scmTag":"v1.1.0"},
-    {"id":"store-03-server","scmTag":"v1.1.0"},
-    {"id":"store-04-server","scmTag":"v1.2.0"},
-    {"id":"store-05-server","scmTag":"v1.2.0"},
-    {"id":"store-06-server","scmTag":"v1.2.0"}
+    {"id":"storeConfig-01-server","scmTag":"v1.0.0"},
+    {"id":"storeConfig-02-server","scmTag":"v1.1.0"},
+    {"id":"storeConfig-03-server","scmTag":"v1.1.0"},
+    {"id":"storeConfig-04-server","scmTag":"v1.2.0"},
+    {"id":"storeConfig-05-server","scmTag":"v1.2.0"},
+    {"id":"storeConfig-06-server","scmTag":"v1.2.0"}
 ]

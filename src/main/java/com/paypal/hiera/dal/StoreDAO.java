@@ -2,7 +2,7 @@ package com.paypal.hiera.dal;
 
 import com.paypal.common.exceptions.DalException;
 import com.google.common.base.Predicate;
-import com.paypal.hiera.models.Store;
+import com.paypal.hiera.models.StoreConfig;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -28,7 +28,7 @@ import java.util.List;
 @Qualifier("StoreDAO")
 @Transactional
 
-public class StoreDAO implements ResourceDAO<Store, Integer> {
+public class StoreDAO implements ResourceDAO<StoreConfig, String> {
     private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
@@ -44,24 +44,24 @@ public class StoreDAO implements ResourceDAO<Store, Integer> {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
-    public Iterable<Store> getAll() throws DalException {
+    public Iterable<StoreConfig> getAll() throws DalException {
         return this.getList(null);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<Store> getByIdList(List<Integer> idList) throws DalException {
+    public Iterable<StoreConfig> getByIdList(List<String> idList) throws DalException {
         return this.getList(Restrictions.in("id", idList));
     }
 
     @Override
-    public Iterable<Store> getByPredicate(Predicate<Store> predicate) throws DalException {
+    public Iterable<StoreConfig> getByPredicate(Predicate<StoreConfig> predicate) throws DalException {
         throw new NotImplementedException("This method is not implemented.");
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<Store> getList(Criterion criterion) throws DalException {
+    public Iterable<StoreConfig> getList(Criterion criterion) throws DalException {
         Criteria criteria = this.getCriteriaInstance();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         if(criterion != null) criteria.add(criterion);
@@ -70,36 +70,48 @@ public class StoreDAO implements ResourceDAO<Store, Integer> {
 
     @Override
     public Criteria getCriteriaInstance() throws DalException {
-        return this.getCurrentSession().createCriteria(Store.class);
+        return this.getCurrentSession().createCriteria(StoreConfig.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Store getById(Integer id) throws DalException {
-        return (Store) getCurrentSession().get(Store.class, id);
+    public StoreConfig getById(String id) throws DalException {
+        return (StoreConfig) getCurrentSession().get(StoreConfig.class, id);
     }
 
     @Override
     @Transactional
-    public Integer addResource(Store store) throws DalException {
+    public String addResource(StoreConfig storeConfig) throws DalException {
         try {
-            getCurrentSession().save(store);
-            return store.getId();
+            getCurrentSession().save(storeConfig);
+            return storeConfig.getId();
         } catch (Exception e){
             logger.error(e.getMessage(), e);
-            throw new DalException("Failed to add hiera.", e);
+            throw new DalException("Failed to add StoreConfig.", e);
         }
     }
 
     @Override
     @Transactional
-    public Integer updateResource(Store store) throws DalException {
+    public String updateResource(StoreConfig storeConfig) throws DalException {
         try {
-            getCurrentSession().update(store);
-            return store.getId();
+            getCurrentSession().update(storeConfig);
+            return storeConfig.getId();
         } catch (Exception e){
             logger.error(e.getMessage(), e);
-            throw new DalException("Failed to update hiera.", e);
+            throw new DalException("Failed to update StoreConfig.", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public String saveOrUpdateResource(StoreConfig storeConfig) throws DalException {
+        try {
+            getCurrentSession().saveOrUpdate(storeConfig);
+            return storeConfig.getId();
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DalException("Failed to update StoreConfig.", e);
         }
     }
 }
