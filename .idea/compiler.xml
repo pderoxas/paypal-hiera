@@ -25,6 +25,7 @@
         <module name="infra-common" />
         <module name="infra-ops-console" />
         <module name="infra-selenium-app" />
+        <module name="paypal-hiera" />
         <module name="paypal-location" />
       </profile>
     </annotationProcessing>

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/paypal-location.iml" filepath="$PROJECT_DIR$/paypal-location.iml" />
+      <module fileurl="file://$PROJECT_DIR$/paypal-hiera.iml" filepath="$PROJECT_DIR$/paypal-hiera.iml" />
     </modules>
   </component>
 </project>

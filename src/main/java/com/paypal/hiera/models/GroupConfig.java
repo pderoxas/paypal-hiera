@@ -16,11 +16,11 @@ public class GroupConfig implements Resource<String> {
     @Column(name="id", nullable=false)
     private String id;
 
-    @Column(name="version", nullable=false)
-    private String version;
-
-    @Column(name="platform", nullable=false)
-    private String platform;
+    @ManyToOne
+    @JoinColumn(name="sdk_release_id",
+            insertable=false, updatable=false,
+            nullable=false)
+    private SdkRelease sdk;
 
     @Column(name="root_dir", nullable=false)
     private String rootDir;
@@ -35,22 +35,6 @@ public class GroupConfig implements Resource<String> {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
     }
 
     public String getRootDir() {
@@ -68,4 +52,8 @@ public class GroupConfig implements Resource<String> {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public SdkRelease getSdk() { return sdk; }
+
+    public void setSdk(SdkRelease sdk) { this.sdk = sdk; }
 }
