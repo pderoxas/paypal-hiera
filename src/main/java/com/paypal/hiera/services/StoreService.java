@@ -25,17 +25,17 @@ public class StoreService {
 
     @Autowired
     @Qualifier("StoreDAO")
-    private ResourceDAO<StoreConfig, Integer> resourceDAO;
+    private ResourceDAO<StoreConfig, String> resourceDAO;
 
     public Iterable<StoreConfig> getAllStores() throws DalException {
         return resourceDAO.getAll();
     }
 
-    public Iterable<StoreConfig> getStores(List<Integer> idList) throws DalException {
+    public Iterable<StoreConfig> getStores(List<String> idList) throws DalException {
         return resourceDAO.getByIdList(idList);
     }
 
-    public StoreConfig getStore(Integer id) throws DalException, ResourceNotFoundException {
+    public StoreConfig getStore(String id) throws DalException, ResourceNotFoundException {
         StoreConfig resource = resourceDAO.getById(id);
         if(resource == null){
             ResourceNotFoundException e = new ResourceNotFoundException("StoreConfig Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);

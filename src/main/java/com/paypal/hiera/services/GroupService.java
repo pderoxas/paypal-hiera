@@ -25,17 +25,17 @@ public class GroupService {
 
     @Autowired
     @Qualifier("GroupDAO")
-    private ResourceDAO<GroupConfig, Integer> resourceDAO;
+    private ResourceDAO<GroupConfig, String> resourceDAO;
 
     public Iterable<GroupConfig> getAllGroups() throws DalException {
         return resourceDAO.getAll();
     }
 
-    public Iterable<GroupConfig> getGroups (List<Integer> idList) throws DalException {
+    public Iterable<GroupConfig> getGroups (List<String> idList) throws DalException {
         return resourceDAO.getByIdList(idList);
     }
 
-    public GroupConfig getGroup(Integer id) throws DalException, ResourceNotFoundException {
+    public GroupConfig getGroup(String id) throws DalException, ResourceNotFoundException {
         GroupConfig resource = resourceDAO.getById(id);
         if(resource == null){
             ResourceNotFoundException e = new ResourceNotFoundException("GroupConfig Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);

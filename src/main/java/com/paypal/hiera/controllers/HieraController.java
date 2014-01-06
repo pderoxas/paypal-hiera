@@ -2,12 +2,10 @@ package com.paypal.hiera.controllers;
 
 import com.paypal.common.exceptions.DalException;
 import com.paypal.hiera.exceptions.ResourceNotFoundException;
-import com.paypal.hiera.models.HieraData;
-import com.paypal.hiera.models.LocationConfig;
-import com.paypal.hiera.models.GroupConfig;
-import com.paypal.hiera.models.StoreConfig;
+import com.paypal.hiera.models.*;
 import com.paypal.hiera.services.LocationService;
 import com.paypal.hiera.services.GroupService;
+import com.paypal.hiera.services.SdkReleaseService;
 import com.paypal.hiera.services.StoreService;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -36,6 +34,8 @@ public class HieraController {
     @Autowired
     private StoreService storeService;
 
+    @Autowired
+    private SdkReleaseService sdkReleaseService;
 
     //GeoLocations===================================================
     @RequestMapping(value = "/hieraData", method = RequestMethod.GET)
@@ -43,9 +43,9 @@ public class HieraController {
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     public HieraData getHieraData() throws DalException {
         HieraData hieraData = new HieraData();
-        hieraData.setDefaultConfigs(locationService.getLocationByCode(null));
+        hieraData.setLocationConfigs(locationService.getLocationByCode(null));
         hieraData.setGroupConfigs(groupService.getAllGroups());
-        hieraData.setCustomConfigs(storeService.getAllStores());
+        hieraData.setStoreConfigs(storeService.getAllStores());
         return hieraData;
     }
 
@@ -60,7 +60,7 @@ public class HieraController {
     @RequestMapping(value = "/locations/{id}", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public LocationConfig getGeoLocation(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+    public LocationConfig getGeoLocation(@PathVariable String id) throws DalException, ResourceNotFoundException {
         return locationService.getLocation(id);
     }
 
@@ -81,7 +81,7 @@ public class HieraController {
     @RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public GroupConfig getGroup(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+    public GroupConfig getGroup(@PathVariable String id) throws DalException, ResourceNotFoundException {
         return groupService.getGroup(id);
     }
 
@@ -102,7 +102,7 @@ public class HieraController {
     @RequestMapping(value = "/stores/{id}", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public StoreConfig getStore(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+    public StoreConfig getStore(@PathVariable String id) throws DalException, ResourceNotFoundException {
         return storeService.getStore(id);
     }
 
@@ -110,6 +110,27 @@ public class HieraController {
     public String updateStore(@RequestBody StoreConfig storeConfig) throws DalException, ResourceNotFoundException {
         String id = storeService.saveStore(storeConfig).getId();
         return "redirect:/stores/" + id;
+    }
+
+    //SDK Release ===================================================
+    @RequestMapping(value = "/sdkReleases", method = RequestMethod.GET)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Iterable<SdkRelease> getSdkReleases() throws DalException {
+        return sdkReleaseService.getAllSdkReleases();
+    }
+
+    @RequestMapping(value = "/sdkReleases/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public SdkRelease getSdkRelease(@PathVariable Integer id) throws DalException, ResourceNotFoundException {
+        return sdkReleaseService.getSdkRelease(id);
+    }
+
+    @RequestMapping(value = "/sdkReleases", method = RequestMethod.POST)
+    public String updateSdkRelease(@RequestBody SdkRelease sdkRelease) throws DalException, ResourceNotFoundException {
+        Integer id = sdkReleaseService.saveSdkRelease(sdkRelease).getId();
+        return "redirect:/sdkReleases/" + id;
     }
 
 }

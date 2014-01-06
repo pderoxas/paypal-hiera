@@ -1,22 +1,20 @@
 package com.paypal.hiera.models;
 
-import java.util.List;
-
 /**
  * Created by pderoxas on 1/2/14.
  */
 public class HieraData {
 
-    private Iterable<LocationConfig> defaultConfigs;
+    private Iterable<LocationConfig> locationConfigs;
     private Iterable<GroupConfig> groupConfigs;
-    private Iterable<StoreConfig> customConfigs;
+    private Iterable<StoreConfig> storeConfigs;
 
-    public Iterable<LocationConfig> getDefaultConfigs() {
-        return defaultConfigs;
+    public Iterable<LocationConfig> getLocationConfigs() {
+        return locationConfigs;
     }
 
-    public void setDefaultConfigs(Iterable<LocationConfig> defaultConfigs) {
-        this.defaultConfigs = defaultConfigs;
+    public void setLocationConfigs(Iterable<LocationConfig> locationConfigs) {
+        this.locationConfigs = locationConfigs;
     }
 
     public Iterable<GroupConfig> getGroupConfigs() {
@@ -27,11 +25,11 @@ public class HieraData {
         this.groupConfigs = groupConfigs;
     }
 
-    public Iterable<StoreConfig> getCustomConfigs() {
-        return customConfigs;
+    public Iterable<StoreConfig> getStoreConfigs() {
+        return storeConfigs;
     }
 
-    public void setCustomConfigs(Iterable<StoreConfig> customConfigs) {
-        this.customConfigs = customConfigs;
+    public void setStoreConfigs(Iterable<StoreConfig> storeConfigs) {
+        this.storeConfigs = storeConfigs;
     }
 }

@@ -27,7 +27,7 @@ public class LocationService {
 
     @Autowired
     @Qualifier("LocationDAO")
-    private ResourceDAO<LocationConfig, Integer> resourceDAO;
+    private ResourceDAO<LocationConfig, String> resourceDAO;
 
     public Iterable<LocationConfig> getAllLocations() throws DalException {
         return resourceDAO.getAll();
@@ -40,11 +40,11 @@ public class LocationService {
         return resourceDAO.getAll();
     }
 
-    public Iterable<LocationConfig> getGeoLocations(List<Integer> idList) throws DalException {
+    public Iterable<LocationConfig> getGeoLocations(List<String> idList) throws DalException {
         return resourceDAO.getByIdList(idList);
     }
 
-    public LocationConfig getLocation(Integer id) throws DalException, ResourceNotFoundException {
+    public LocationConfig getLocation(String id) throws DalException, ResourceNotFoundException {
         LocationConfig resource = resourceDAO.getById(id);
         if(resource == null){
             ResourceNotFoundException e = new ResourceNotFoundException("LocationConfig Resource (" + id + ") does not exist.", ExceptionCode.RESOURCE_NOT_FOUND);
