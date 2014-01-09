@@ -37,7 +37,7 @@ public class HieraController {
     @Autowired
     private SdkReleaseService sdkReleaseService;
 
-    //GeoLocations===================================================
+    //Hiera Data===================================================
     @RequestMapping(value = "/hieraData", method = RequestMethod.GET)
     @ResponseBody
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -70,6 +70,14 @@ public class HieraController {
         return "redirect:/locations/" + id;
     }
 
+    @RequestMapping(value = "/locations", method = RequestMethod.DELETE)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Iterable<LocationConfig> deleteGeoLocation(@RequestBody LocationConfig locationConfig) throws DalException, ResourceNotFoundException {
+        locationService.deleteLocation(locationConfig);
+        return locationService.getAllLocations();
+    }
+
     //Groups===================================================
     @RequestMapping(value = "/groups", method = RequestMethod.GET)
     @ResponseBody
@@ -89,6 +97,14 @@ public class HieraController {
     public String updateGroup(@RequestBody GroupConfig groupConfig) throws DalException, ResourceNotFoundException {
         String id = groupService.saveGroup(groupConfig).getId();
         return "redirect:/groups/" + id;
+    }
+
+    @RequestMapping(value = "/groups", method = RequestMethod.DELETE)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Iterable<GroupConfig>  deleteGroup(@RequestBody GroupConfig groupConfig) throws DalException, ResourceNotFoundException {
+        groupService.deleteGroup(groupConfig);
+        return groupService.getAllGroups();
     }
 
     //Stores===================================================
@@ -112,6 +128,14 @@ public class HieraController {
         return "redirect:/stores/" + id;
     }
 
+    @RequestMapping(value = "/stores", method = RequestMethod.DELETE)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Iterable<StoreConfig> deleteStore(@RequestBody StoreConfig storeConfig) throws DalException, ResourceNotFoundException {
+        storeService.deleteStore(storeConfig);
+        return storeService.getAllStores();
+    }
+
     //SDK Release ===================================================
     @RequestMapping(value = "/sdkReleases", method = RequestMethod.GET)
     @ResponseBody
@@ -131,6 +155,14 @@ public class HieraController {
     public String updateSdkRelease(@RequestBody SdkRelease sdkRelease) throws DalException, ResourceNotFoundException {
         Integer id = sdkReleaseService.saveSdkRelease(sdkRelease).getId();
         return "redirect:/sdkReleases/" + id;
+    }
+
+    @RequestMapping(value = "/sdkReleases", method = RequestMethod.DELETE)
+    @ResponseBody
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public Iterable<SdkRelease> deleteSdkRelease(@RequestBody SdkRelease sdkRelease) throws DalException, ResourceNotFoundException {
+        sdkReleaseService.deleteSdkRelease(sdkRelease);
+        return sdkReleaseService.getAllSdkReleases();
     }
 
 }

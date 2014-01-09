@@ -16,6 +16,9 @@ public class GroupConfig implements Resource<String> {
     @Column(name="id", nullable=false)
     private String id;
 
+    @Column(name="sdk_release_id", nullable=false)
+    private int sdkReleaseId;
+
     @ManyToOne
     @JoinColumn(name="sdk_release_id",
             insertable=false, updatable=false,
@@ -56,4 +59,12 @@ public class GroupConfig implements Resource<String> {
     public SdkRelease getSdk() { return sdk; }
 
     public void setSdk(SdkRelease sdk) { this.sdk = sdk; }
+
+    public int getSdkReleaseId() {
+        return sdkReleaseId;
+    }
+
+    public void setSdkReleaseId(int sdkReleaseId) {
+        this.sdkReleaseId = sdkReleaseId;
+    }
 }

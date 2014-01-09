@@ -50,4 +50,8 @@ public class GroupService {
         return groupConfig;
     }
 
+    public void deleteGroup(GroupConfig groupConfig) throws DalException {
+        resourceDAO.deleteResource(groupConfig);
+    }
+
 }

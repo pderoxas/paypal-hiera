@@ -2,6 +2,7 @@ package com.paypal.hiera.dal;
 
 import com.paypal.common.exceptions.DalException;
 import com.google.common.base.Predicate;
+import com.paypal.hiera.models.LocationConfig;
 import com.paypal.hiera.models.StoreConfig;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
@@ -112,6 +113,17 @@ public class StoreDAO implements ResourceDAO<StoreConfig, String> {
         } catch (Exception e){
             logger.error(e.getMessage(), e);
             throw new DalException("Failed to update StoreConfig.", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteResource(StoreConfig storeConfig) throws DalException {
+        try {
+            getCurrentSession().delete(storeConfig);
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DalException("Failed to delete StoreConfig.", e);
         }
     }
 }

@@ -50,4 +50,8 @@ public class StoreService {
         return storeConfig;
     }
 
+    public void deleteStore(StoreConfig storeConfig) throws DalException {
+        resourceDAO.deleteResource(storeConfig);
+    }
+
 }

@@ -86,4 +86,6 @@ public interface ResourceDAO<T extends Resource, K extends Serializable> {
      * @throws DalException
      */
     K saveOrUpdateResource(T resource) throws DalException;
+
+    void deleteResource(T resource) throws DalException;
 }

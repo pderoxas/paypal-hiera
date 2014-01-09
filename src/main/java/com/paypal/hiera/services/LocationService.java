@@ -59,4 +59,8 @@ public class LocationService {
         return locationConfig;
     }
 
+    public void deleteLocation(LocationConfig locationConfig) throws DalException {
+        resourceDAO.deleteResource(locationConfig);
+    }
+
 }

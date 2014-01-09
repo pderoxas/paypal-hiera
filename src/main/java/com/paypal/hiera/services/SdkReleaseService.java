@@ -50,4 +50,7 @@ public class SdkReleaseService {
         return sdkRelease;
     }
 
+    public void deleteSdkRelease(SdkRelease sdkRelease) throws DalException {
+        resourceDAO.deleteResource(sdkRelease);
+    }
 }

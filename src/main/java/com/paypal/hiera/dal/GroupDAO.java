@@ -114,4 +114,15 @@ public class GroupDAO implements ResourceDAO<GroupConfig, String> {
             throw new DalException("Failed to update GroupConfig.", e);
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteResource(GroupConfig groupConfig) throws DalException {
+        try {
+            getCurrentSession().delete(groupConfig);
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DalException("Failed to delete GroupConfig.", e);
+        }
+    }
 }

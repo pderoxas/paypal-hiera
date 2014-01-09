@@ -115,4 +115,15 @@ public class SdkReleaseDAO implements ResourceDAO<SdkRelease, Integer> {
             throw new DalException("Failed to update SdkRelease.", e);
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteResource(SdkRelease sdkRelease) throws DalException {
+        try {
+            getCurrentSession().delete(sdkRelease);
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            throw new DalException("Failed to update SdkRelease.", e);
+        }
+    }
 }
